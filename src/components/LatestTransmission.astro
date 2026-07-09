@@ -1,0 +1,414 @@
+---
+import Icon from "./icons/Icon.astro";
+import type { Episode } from "../lib/rss";
+
+interface Props {
+  episode: Episode | null;
+}
+
+const { episode } = Astro.props;
+
+function formatTime(seconds: number): string {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  const mm = h > 0 ? String(m).padStart(2, "0") : String(m);
+  const ss = String(s).padStart(2, "0");
+  return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+---
+
+<section class="sec reveal" id="latest">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Latest Transmission</h2>
+    </div>
+
+    {
+      episode ? (
+        <div class="latest">
+          <div class="latest__card">
+            <span class="latest__no">
+              {episode.episodeNumber ? `▚ EPISODE ${episode.episodeNumber}` : "▚ SPECIAL BROADCAST"}
+            </span>
+            <h3 class="latest__title">{episode.cleanTitle}</h3>
+
+            {episode.audioUrl ? (
+              <div class="player" data-player>
+                <audio preload="none" data-audio src={episode.audioUrl} />
+                <button type="button" class="player__play" data-play aria-label="Play latest episode">
+                  <Icon name="play" size={16} class="player__icon player__icon--play" />
+                  <Icon name="pause" size={16} class="player__icon player__icon--pause" />
+                </button>
+                <div class="player__body">
+                  <input class="player__seek" type="range" min="0" max="1000" value="0" data-seek aria-label="Seek playback position" />
+                  <div class="player__time">
+                    <span data-current>0:00</span>
+                    <span data-duration>--:--</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <a href={episode.link} class="btn btn--amber-solid" target="_blank" rel="noopener">
+                <Icon name="play" size={13} />
+                Play Latest
+              </a>
+            )}
+
+            <a href={episode.link} class="latest__src" target="_blank" rel="noopener">
+              // full notes: ourbigdumbmouth.libsyn.com
+            </a>
+          </div>
+
+          {episode.chapters.length > 0 ? (
+            <ol class="chapters" data-chapters>
+              {episode.chapters.map((ch) =>
+                episode.audioUrl ? (
+                  <li>
+                    <button type="button" class="chapter-row" data-seconds={ch.seconds}>
+                      <span class="t">{formatTime(ch.seconds)}</span>
+                      <span class="d">{ch.label}</span>
+                      <Icon name="play" size={11} class="chapter-row__ico" />
+                    </button>
+                  </li>
+                ) : (
+                  <li class="chapter-row chapter-row--static">
+                    <span class="t">{formatTime(ch.seconds)}</span>
+                    <span class="d">{ch.label}</span>
+                  </li>
+                ),
+              )}
+            </ol>
+          ) : (
+            <p class="latest__fallback">{episode.summary}</p>
+          )}
+        </div>
+      ) : (
+        <p class="latest__fallback">Feed's down for a second — check back shortly, or hit the RSS feed directly.</p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .latest {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 34px;
+    align-items: start;
+  }
+
+  .latest__card {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--panel);
+    padding: 26px;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 84px;
+  }
+
+  .latest__no {
+    font-family: var(--font-mono);
+    color: var(--ufo);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+
+  .latest__title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(22px, 3vw, 32px);
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin: 10px 0 18px;
+  }
+
+  .latest__src {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--green-dim);
+    margin-top: 16px;
+    letter-spacing: 0.04em;
+    transition: color 0.18s var(--ease-signal);
+  }
+
+  .latest__src:hover,
+  .latest__src:focus-visible {
+    color: var(--green);
+  }
+
+  /* --- embedded player --- */
+  .player {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .player__play {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--amber);
+    color: var(--void);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      transform 0.16s var(--ease-signal),
+      box-shadow 0.16s var(--ease-signal);
+    position: relative;
+  }
+
+  .player__play:hover {
+    box-shadow: 0 0 22px -4px var(--amber);
+  }
+
+  .player__play:active {
+    transform: scale(0.96);
+  }
+
+  .player__play :global(.player__icon) {
+    position: absolute;
+  }
+
+  .player__play :global(.player__icon--play) {
+    margin-left: 2px;
+  }
+
+  .player__play :global(.player__icon--pause) {
+    display: none;
+  }
+
+  .player__play.is-playing :global(.player__icon--play) {
+    display: none;
+  }
+
+  .player__play.is-playing :global(.player__icon--pause) {
+    display: block;
+  }
+
+  .player__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .player__seek {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    cursor: pointer;
+  }
+
+  .player__seek::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 0 3px rgba(255, 158, 61, 0.2);
+    transition: box-shadow 0.16s var(--ease-signal);
+  }
+
+  .player__seek:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(255, 158, 61, 0.35);
+  }
+
+  .player__seek::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border: none;
+    border-radius: 50%;
+    background: var(--amber);
+  }
+
+  .player__time {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chapters {
+    list-style: none;
+    counter-reset: none;
+    column-gap: 28px;
+  }
+
+  @media (min-width: 1100px) {
+    .chapters {
+      columns: 2;
+    }
+
+    .chapters li {
+      break-inside: avoid;
+    }
+  }
+
+  /* buttons carry a UA default border (2px outset) — set all four sides
+     explicitly or the top stroke won't match the other three */
+  .chapter-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 12px;
+    margin: 0 0 8px;
+    border: 1px solid rgba(236, 231, 216, 0.35);
+    border-radius: 3px;
+    font-size: 14.5px;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    transition: background-color 0.16s var(--ease-signal);
+    position: relative;
+  }
+
+  button.chapter-row {
+    cursor: pointer;
+  }
+
+  button.chapter-row:hover,
+  button.chapter-row:focus-visible {
+    background: var(--void-2);
+  }
+
+  button.chapter-row:hover .t,
+  button.chapter-row:focus-visible .t,
+  .chapter-row.is-active .t {
+    color: var(--amber);
+  }
+
+  .chapter-row.is-active {
+    background: rgba(255, 158, 61, 0.06);
+  }
+
+  .chapter-row :global(.chapter-row__ico) {
+    margin-left: auto;
+    flex-shrink: 0;
+    color: var(--amber);
+    opacity: 0;
+    transition: opacity 0.16s var(--ease-signal);
+  }
+
+  button.chapter-row:hover :global(.chapter-row__ico),
+  button.chapter-row:focus-visible :global(.chapter-row__ico),
+  .chapter-row.is-active :global(.chapter-row__ico) {
+    opacity: 1;
+  }
+
+  .chapter-row .t {
+    font-family: var(--font-mono);
+    color: var(--green);
+    font-size: 12.5px;
+    flex-shrink: 0;
+    min-width: 3.5em;
+    transition: color 0.16s var(--ease-signal);
+  }
+
+  .chapter-row .d {
+    color: #c9d1db;
+  }
+
+  .latest__fallback {
+    color: var(--dim);
+    font-size: 15px;
+    max-width: 60ch;
+  }
+
+  @media (max-width: 900px) {
+    .latest {
+      grid-template-columns: 1fr;
+    }
+
+    .latest__card {
+      position: static;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-player]").forEach((root) => {
+    const audio = root.querySelector<HTMLAudioElement>("[data-audio]");
+    const playBtn = root.querySelector<HTMLButtonElement>("[data-play]");
+    const seek = root.querySelector<HTMLInputElement>("[data-seek]");
+    const currentEl = root.querySelector<HTMLElement>("[data-current]");
+    const durationEl = root.querySelector<HTMLElement>("[data-duration]");
+    if (!audio || !playBtn || !seek) return;
+
+    function formatTime(seconds: number): string {
+      if (!isFinite(seconds) || seconds < 0) return "0:00";
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = Math.floor(seconds % 60);
+      const mm = h > 0 ? String(m).padStart(2, "0") : String(m);
+      const ss = String(s).padStart(2, "0");
+      return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+    }
+
+    let dragging = false;
+
+    playBtn.addEventListener("click", () => {
+      if (audio.paused) audio.play();
+      else audio.pause();
+    });
+
+    audio.addEventListener("play", () => {
+      playBtn.classList.add("is-playing");
+      playBtn.setAttribute("aria-label", "Pause");
+    });
+
+    audio.addEventListener("pause", () => {
+      playBtn.classList.remove("is-playing");
+      playBtn.setAttribute("aria-label", "Play latest episode");
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+      seek.max = String(Math.floor(audio.duration));
+      if (durationEl) durationEl.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      if (!dragging) seek.value = String(Math.floor(audio.currentTime));
+      if (currentEl) currentEl.textContent = formatTime(audio.currentTime);
+      updateActiveChapter();
+    });
+
+    seek.addEventListener("pointerdown", () => (dragging = true));
+    seek.addEventListener("pointerup", () => (dragging = false));
+    seek.addEventListener("input", () => {
+      audio.currentTime = Number(seek.value);
+      if (currentEl) currentEl.textContent = formatTime(audio.currentTime);
+    });
+
+    const chapterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-chapters] button.chapter-row"));
+
+    function updateActiveChapter() {
+      if (!audio) return;
+      let active: HTMLButtonElement | null = null;
+      for (const btn of chapterButtons) {
+        const secs = Number(btn.getAttribute("data-seconds"));
+        if (audio.currentTime >= secs) active = btn;
+      }
+      chapterButtons.forEach((b) => b.classList.toggle("is-active", b === active));
+    }
+
+    chapterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const secs = Number(btn.getAttribute("data-seconds"));
+        audio.currentTime = secs;
+        audio.play();
+      });
+    });
+  });
+</script>

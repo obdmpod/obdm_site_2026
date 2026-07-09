@@ -1,0 +1,270 @@
+---
+import Icon from "./icons/Icon.astro";
+
+const channels = [
+  { name: "Rumble", href: "https://rumble.com/user/obdm", icon: "rumble" as const, meta: "Live stream", liveCapable: true },
+  { name: "Twitch", href: "https://www.twitch.tv/obdmpod", icon: "twitch" as const, meta: "Live call-in", liveCapable: true },
+  { name: "YouTube", href: "https://www.youtube.com/@obdmpod", icon: "youtube" as const, meta: "Video + clips" },
+];
+
+const subscribe = [
+  { name: "Spotify", href: "https://open.spotify.com/show/7FNTBMeeIG0WFyySnl6Ix3" },
+  { name: "Apple", href: "https://podcasts.apple.com/us/podcast/our-big-dumb-mouth/id261189509" },
+];
+---
+
+<section class="sec reveal" id="live">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Join Live</h2>
+    </div>
+    <div class="slate">
+      <div class="slate__cell">
+        <div class="lbl">Main Show</div>
+        <div class="slate__day">Wednesday</div>
+        <div class="slate__time">7:00 PM ET</div>
+        <div class="slate__sub">Strange news. Alex Jones clips of the week.</div>
+      </div>
+      <div class="slate__cell">
+        <div class="lbl">Hangover Show</div>
+        <div class="slate__day">Saturday</div>
+        <div class="slate__time">10:30 AM ET</div>
+        <div class="slate__sub">Saturday funday.</div>
+      </div>
+      <div class="slate__cell slate__cell--hotline">
+        <div class="lbl">
+          <Icon name="phone" size={13} />
+          Call the Hotline
+        </div>
+        <a class="slate__phone" href="tel:+15134612175">513·461·2175</a>
+        <div class="slate__sub">Call in during the live show; we usually up the phone on Saturdays.</div>
+      </div>
+    </div>
+
+    <ul class="console">
+      {
+        channels.map((c) => (
+          <li>
+            <a class="chan" href={c.href} target="_blank" rel="noopener" data-live-chan={c.liveCapable ? "" : undefined}>
+              <Icon name={c.icon} size={22} class="chan__ico" />
+              <span class="chan__name">{c.name}</span>
+              <span class="chan__meta" data-live-text={c.liveCapable ? "" : undefined} data-offline-text={c.meta}>
+                {c.meta}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <div class="chan chan--subscribe">
+          <Icon name="podcast" size={22} class="chan__ico" />
+          <span class="chan__name">Subscribe</span>
+          <span class="chan__links">
+            {subscribe.map((s, i) => (
+              <>
+                {i > 0 && <span class="chan__divider" aria-hidden="true">·</span>}
+                <a href={s.href} target="_blank" rel="noopener">{s.name}</a>
+              </>
+            ))}
+          </span>
+        </div>
+      </li>
+      <li>
+        <a class="chan" href="https://ourbigdumbmouth.libsyn.com/rss" target="_blank" rel="noopener">
+          <Icon name="rss" size={22} class="chan__ico" />
+          <span class="chan__name">RSS</span>
+          <span class="chan__meta">Own the feed</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .slate {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    background: linear-gradient(150deg, #101a12, #0a0e14 60%);
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.1fr;
+  }
+
+  .slate__cell {
+    padding: 30px 28px;
+    border-right: 1px solid var(--line);
+  }
+
+  .slate__cell:last-child {
+    border-right: none;
+  }
+
+  .slate__cell--hotline {
+    background: rgba(255, 158, 61, 0.05);
+  }
+
+  .lbl {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+
+  .slate__cell--hotline .lbl {
+    color: var(--amber);
+  }
+
+  .slate__day {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+  }
+
+  .slate__time {
+    font-family: var(--font-mono);
+    color: var(--bone);
+    font-size: 15px;
+    margin-top: 4px;
+  }
+
+  .slate__sub {
+    color: var(--dim);
+    font-size: 13.5px;
+    margin-top: 8px;
+  }
+
+  .slate__phone {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(24px, 3vw, 32px);
+    color: var(--amber);
+    letter-spacing: -0.01em;
+    display: inline-block;
+    transition: text-shadow 0.2s var(--ease-signal);
+  }
+
+  .slate__phone:hover,
+  .slate__phone:focus-visible {
+    text-shadow: 0 0 18px rgba(255, 158, 61, 0.6);
+  }
+
+  @media (max-width: 900px) {
+    .slate {
+      grid-template-columns: 1fr;
+    }
+
+    .slate__cell {
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .slate__cell:last-child {
+      border-bottom: none;
+    }
+  }
+
+  /* --- channel tiles, sitting directly under the schedule slate --- */
+  .console {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .chan {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--panel);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 112px;
+    transition:
+      border-color 0.18s var(--ease-signal),
+      transform 0.18s var(--ease-signal),
+      box-shadow 0.18s var(--ease-signal);
+    position: relative;
+    overflow: hidden;
+  }
+
+  a.chan:hover,
+  a.chan:focus-visible {
+    border-color: var(--green);
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px var(--green), 0 14px 30px -18px var(--green);
+  }
+
+  .chan :global(.chan__ico) {
+    color: var(--green);
+  }
+
+  .chan__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+  }
+
+  .chan__meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-top: auto;
+  }
+
+  .chan--live .chan__meta {
+    color: var(--red);
+  }
+
+  .chan--live::after {
+    content: "";
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 10px var(--red);
+    animation: blink 1.4s steps(1) infinite;
+  }
+
+  .chan--subscribe {
+    cursor: default;
+  }
+
+  .chan__links {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .chan__links a {
+    color: var(--dim);
+    transition: color 0.18s var(--ease-signal);
+  }
+
+  .chan__links a:hover,
+  .chan__links a:focus-visible {
+    color: var(--green);
+  }
+
+  .chan__divider {
+    color: var(--line);
+  }
+</style>

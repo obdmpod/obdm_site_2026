@@ -1,0 +1,361 @@
+---
+import { Image } from "astro:assets";
+import Icon from "./icons/Icon.astro";
+import frame1 from "../assets/discord-bg/frame-1.webp";
+import frame2 from "../assets/discord-bg/frame-2.webp";
+import frame3 from "../assets/discord-bg/frame-3.webp";
+import frame4 from "../assets/discord-bg/frame-4.webp";
+import frame5 from "../assets/discord-bg/frame-5.webp";
+import frame6 from "../assets/discord-bg/frame-6.webp";
+
+const frames = [frame1, frame2, frame3, frame4, frame5, frame6];
+
+const support = [
+  {
+    name: "SubscribeStar",
+    href: "https://www.subscribestar.com/obdm",
+    icon: "star" as const,
+  },
+  {
+    name: "Crypto / Tip Jar",
+    href: "https://streamlabs.com/ourbigdumbmouth/tip",
+    icon: "coin" as const,
+  },
+];
+---
+
+<section class="sec reveal" id="join">
+  <div class="join-bg" aria-hidden="true">
+    {frames.map((f, i) => (
+      <Image src={f} alt="" width={900} class="join-bg__frame" style={`animation-delay:${-i * 5}s`} />
+    ))}
+  </div>
+
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Be a Part of the Magic</h2>
+    </div>
+
+    <a class="discord-card" href="https://www.patreon.com/obdm" target="_blank" rel="noopener">
+      <div class="discord-card__body">
+        <span class="discord-card__eyebrow">Support the Show</span>
+        <h3>Join the Discord</h3>
+        <p>Connect with the goblins where the show never stops.</p>
+        <span class="discord-card__cta">
+          Unlock with Patreon for $1+/mo
+          <Icon name="arrow-right" size={16} />
+        </span>
+      </div>
+
+      <div class="discord-card__art" aria-hidden="true">
+        <picture>
+          <source srcset="/join/discord-saucer-still.webp" media="(prefers-reduced-motion: reduce)" />
+          <img
+            class="discord-ufo"
+            src="/join/discord-saucer.webp"
+            alt=""
+            width="520"
+            height="456"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      </div>
+    </a>
+
+    <div class="support-row">
+      <div class="card">
+        <h4>Support the Show</h4>
+        <p>Other ways to back the broadcast — no subscription required.</p>
+        <div class="support-links">
+          {
+            support.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener">
+                <Icon name={s.icon} size={18} class="s__ico" />
+                <span class="s__name">{s.name}</span>
+                <Icon name="arrow-right" size={14} class="s__arrow" />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+      <div class="card card--signal">
+        <h4>Keep in Touch</h4>
+        <p>Maybe we'll do a newsletter. Or an emergency blast. Probably not. But maybe...</p>
+        <form class="field" data-newsletter>
+          <label for="signal-email" class="visually-hidden">Email address</label>
+          <input
+            id="signal-email"
+            type="email"
+            name="email"
+            required
+            placeholder="Enter your email address..."
+          />
+          <button type="submit" class="btn btn--amber-solid">Sign Up</button>
+        </form>
+        <p class="note">// TODO: connect to your email service before launch</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sec {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .join-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .join-bg :global(.join-bg__frame) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: bg-cycle 30s linear infinite;
+  }
+
+  @keyframes bg-cycle {
+    0% {
+      opacity: 0;
+    }
+    2% {
+      opacity: 0.28;
+    }
+    12% {
+      opacity: 0.28;
+    }
+    16.6% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .sec > .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* --- Discord: the primary CTA, largest tile --- */
+  .discord-card {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    border: 1px solid var(--green-dim);
+    border-radius: 8px;
+    padding: 40px 36px;
+    margin-bottom: 22px;
+    background: linear-gradient(155deg, rgba(70, 245, 160, 0.1), var(--panel) 60%);
+    /* overflow stays visible so the saucer can break out of the card */
+    transition:
+      border-color 0.2s var(--ease-signal),
+      transform 0.2s var(--ease-signal),
+      box-shadow 0.2s var(--ease-signal);
+  }
+
+  .discord-card__art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* bounce, rim-light chase, and thruster burn are baked into the animated webp;
+     oversized + negative margins so the saucer breaks out of the card edges */
+  .discord-ufo {
+    width: 130%;
+    max-width: 380px;
+    height: auto;
+    margin: -56px 0 -44px;
+    filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.45));
+  }
+
+  .discord-card:hover,
+  .discord-card:focus-visible {
+    border-color: var(--green);
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px var(--green), 0 20px 44px -22px var(--green);
+  }
+
+  .discord-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green);
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .discord-card h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(30px, 4vw, 44px);
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+
+  .discord-card__body > p {
+    color: var(--dim);
+    font-size: 16px;
+    max-width: 46ch;
+    margin-bottom: 20px;
+  }
+
+  .discord-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    color: var(--bone);
+    border: 1px solid var(--green);
+    border-radius: 3px;
+    padding: 12px 18px;
+  }
+
+  .discord-card__cta :global(svg) {
+    color: var(--green);
+    margin-left: 4px;
+  }
+
+  /* --- secondary support options --- */
+  .support-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--panel);
+    padding: 26px;
+  }
+
+  .card h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    color: var(--dim);
+    font-size: 13.5px;
+    margin-bottom: 16px;
+  }
+
+  .field {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .field input {
+    flex: 1;
+    min-width: 180px;
+    background: var(--void);
+    border: 1px solid var(--line);
+    color: var(--bone);
+    padding: 12px 14px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+  }
+
+  .field input:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 1px;
+    border-color: var(--green);
+  }
+
+  .note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--green-dim);
+    margin-top: 12px;
+    letter-spacing: 0.03em;
+  }
+
+  .support-links {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .support-links a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 13px 16px;
+    transition:
+      border-color 0.18s var(--ease-signal),
+      transform 0.18s var(--ease-signal);
+    background: var(--void-2);
+  }
+
+  .support-links a:hover,
+  .support-links a:focus-visible {
+    border-color: var(--amber);
+    transform: translateX(3px);
+  }
+
+  .support-links :global(.s__ico) {
+    color: var(--amber);
+    flex-shrink: 0;
+  }
+
+  .s__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14.5px;
+    flex: 1;
+  }
+
+  .support-links :global(.s__arrow) {
+    color: var(--amber);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
+    .support-row {
+      grid-template-columns: 1fr;
+    }
+
+    .discord-card {
+      grid-template-columns: 1fr;
+      padding: 30px 24px;
+    }
+
+    .discord-card__art {
+      order: -1;
+      max-width: 220px;
+      margin: 0 auto;
+    }
+
+    .discord-ufo {
+      width: 100%;
+      margin: -44px 0 -10px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .join-bg :global(.join-bg__frame) {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>

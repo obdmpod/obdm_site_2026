@@ -1,0 +1,262 @@
+---
+// Hero art: final key art — a seamless ~9.5s video loop of the wizard/T-Rex
+// broadcast scene (fire-breath cycle, wizard firing two rounds, dumpster fire
+// and UFO-wreck smoke alive in the corner). The webp still is the loop's first
+// frame: it paints immediately under the video and is what reduced-motion
+// users (and any browser that declines autoplay) see. Master generations live
+// in OpenArt ("Joe Wagner" workspace); loop composited locally — see memory
+// note `obdm-hero-art` for the recipe.
+import { Image } from "astro:assets";
+import heroStill from "../assets/hero-broadcast-still.webp";
+import WatchLiveDropdown from "./WatchLiveDropdown.astro";
+---
+
+<header class="hero" id="top">
+  <div class="hero__bg" aria-hidden="true">
+    <Image
+      src={heroStill}
+      alt=""
+      widths={[900, 1400, 2200, 2936]}
+      sizes="100vw"
+      class="hero__bg-img"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <video
+      class="hero__bg-video"
+      src="/hero/obdm-hero-loop-2x.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      tabindex="-1"
+      data-hero-video
+    ></video>
+    <div class="hero__flicker"></div>
+    <div class="hero__scrim"></div>
+  </div>
+
+  <div class="hero__wrap">
+    <div class="hero__panel">
+      <p class="hero__eyebrow">Our Big Dumb Mouth</p>
+      <h1>OBDM</h1>
+
+      <p class="kicker">Welcome to another fun-filled podcast adventure... Hooray!</p>
+
+      <p class="lead">
+        OBDM is a live podcast and talk show hosted by MidNight Mike and Joe, with listeners like
+        you who call into the show to share their opinions on the topics we discuss — UFOs,
+        Bigfoot, conspiracies, the paranormal, ancient civilizations, current events, and more.
+      </p>
+
+      <div class="hero__cta">
+        <WatchLiveDropdown variant="hero" id="hero-watch-live-menu" />
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__bug" aria-hidden="true">obdm</div>
+</header>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    padding: 96px 0 64px;
+  }
+
+  /* video is a wide 1468x628 plate — on desktop, size the hero off its own
+     aspect ratio instead of a tall vh box, so cover doesn't eat the sides */
+  @media (min-width: 901px) {
+    .hero {
+      min-height: 0;
+      aspect-ratio: 1468 / 628;
+      max-height: 92vh;
+      padding: 64px 0;
+    }
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero__bg :global(.hero__bg-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% 8%;
+    filter: saturate(1.06) contrast(1.03);
+  }
+
+  /* the animated loop sits above the still; the still stays rendered
+     underneath so first paint is instant and autoplay failures degrade
+     gracefully to the identical frame */
+  .hero__bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% 8%;
+    filter: saturate(1.06) contrast(1.03);
+  }
+
+  /* irregular lightning-flash brightness pulse layered on top of the
+     video loop — reads as broadcast-signal interference */
+  .hero__flicker {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    mix-blend-mode: overlay;
+    animation: flicker 7s ease-in-out infinite;
+  }
+
+  @keyframes flicker {
+    0%,
+    91%,
+    100% {
+      opacity: 0;
+    }
+    92% {
+      opacity: 0.14;
+    }
+    92.6% {
+      opacity: 0.02;
+    }
+    93.2% {
+      opacity: 0.11;
+    }
+    94% {
+      opacity: 0;
+    }
+  }
+
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(10, 14, 20, 0.88) 0%, rgba(10, 14, 20, 0.6) 22%, rgba(10, 14, 20, 0.22) 40%, rgba(10, 14, 20, 0.02) 52%),
+      linear-gradient(to top, rgba(10, 14, 20, 0.7) 0%, transparent 26%),
+      repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0) 0 2px, rgba(0, 0, 0, 0.1) 2px 3px);
+  }
+
+  .hero__wrap {
+    position: relative;
+    z-index: 1;
+    padding: 0 clamp(24px, 6vw, 88px);
+  }
+
+  .hero__panel {
+    max-width: 620px;
+    padding: 30px 32px;
+    border-radius: 8px;
+    background: rgba(10, 14, 20, 0.38);
+    border: 1px solid rgba(70, 245, 160, 0.14);
+    backdrop-filter: blur(6px);
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    font-size: clamp(52px, 7vw, 92px);
+    margin-bottom: 6px;
+  }
+
+  .hero__eyebrow {
+    font-size: clamp(14px, 1.8vw, 22px);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--dim);
+    margin-bottom: 6px;
+    font-family: var(--font-body);
+  }
+
+  .hero .kicker {
+    font-family: var(--font-mono);
+    color: var(--ufo);
+    font-size: 14.5px;
+    margin: 18px 0 14px;
+  }
+
+  .hero .lead {
+    font-size: clamp(15.5px, 1.5vw, 17.5px);
+    line-height: 1.6;
+    max-width: 54ch;
+    color: #dbe1e8;
+  }
+
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+    align-items: center;
+  }
+
+  /* channel bug — a nod to the gradient "obdm" ident stamped on the show's
+     own stock-footage cutdowns; recreated in CSS rather than lifted from
+     source video (that copy carries a stock-preview watermark). */
+  .hero__bug {
+    position: absolute;
+    right: 20px;
+    bottom: 16px;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    background: linear-gradient(100deg, #37e6ff, #ff3d8b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0.85;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      min-height: 82vh;
+      padding: 88px 0 48px;
+    }
+
+    .hero__bg :global(.hero__bg-img),
+    .hero__bg-video {
+      object-position: 70% 40%;
+    }
+
+    .hero__panel {
+      max-width: 100%;
+      padding: 24px 20px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__flicker {
+      display: none;
+    }
+
+    .hero__bg-video {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // For reduced-motion users, drop the video element entirely (CSS alone
+  // hides it but the browser would still fetch/decode the loop). The still
+  // underneath is the same frame, so nothing visually changes.
+  const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
+  if (heroVideo && matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    heroVideo.remove();
+  }
+</script>

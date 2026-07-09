@@ -1,0 +1,68 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import SocialTray from "../components/SocialTray.astro";
+import LiveSchedule from "../components/LiveSchedule.astro";
+import JoinSignal from "../components/JoinSignal.astro";
+import FeaturedMerch from "../components/FeaturedMerch.astro";
+import LatestTransmission from "../components/LatestTransmission.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { getLatestEpisode } from "../lib/rss";
+
+let latest = null;
+try {
+  latest = await getLatestEpisode();
+} catch (err) {
+  console.error("[obdm] Failed to fetch RSS feed at build time:", err);
+}
+
+const title = "OBDM — Our Big Dumb Mouth | Live Call-In Talk Show — UFOs, Bigfoot & Conspiracies";
+const description =
+  "OBDM is a live call-in podcast and talk show hosted by MidNight Mike and Joe, covering UFOs, Bigfoot, conspiracies, the paranormal, ancient civilizations, and current events. Live Wednesdays 7PM ET and Saturdays 10:30AM ET.";
+---
+
+<Layout title={title} description={description} episode={latest}>
+  <Nav />
+  <Hero />
+  <SocialTray />
+  <main>
+    <LiveSchedule />
+    <JoinSignal />
+    <FeaturedMerch />
+    <LatestTransmission episode={latest} />
+  </main>
+  <SiteFooter />
+  <a href="/v2" class="v2-peek">See the bolder concept →</a>
+</Layout>
+
+<style>
+  .v2-peek {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 250;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 9px 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--dim);
+    box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.7);
+    transition:
+      border-color 0.2s var(--ease-signal),
+      color 0.2s var(--ease-signal);
+  }
+
+  .v2-peek:hover {
+    border-color: var(--green);
+    color: var(--bone);
+  }
+
+  @media (max-width: 600px) {
+    .v2-peek {
+      display: none;
+    }
+  }
+</style>

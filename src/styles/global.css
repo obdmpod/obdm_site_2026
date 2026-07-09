@@ -1,0 +1,400 @@
+/* ============================================================
+   OBDM — design tokens & shared primitives
+   Section-specific layout lives in each component's scoped
+   <style> block; only truly cross-cutting rules live here so
+   type-selector vs. class-selector specificity fights don't
+   happen between sections.
+   ============================================================ */
+
+:root {
+  /* -- surface: midnight blue-black, three steps of depth -- */
+  --void: #0a0e14;
+  --void-2: #111826;
+  --panel: #141d2b;
+  --line: #263345;
+
+  /* -- signal colors -- */
+  --green: #46f5a0; /* CRT phosphor — primary signal */
+  --green-dim: #1f6b48;
+  --amber: #ff9e3d; /* ON-AIR furniture, primary CTA */
+  --amber-dim: #7a5124;
+  --ufo: #b06bfa; /* used sparingly */
+  --red: #ff4d4d; /* live / recording */
+
+  /* -- text -- */
+  --bone: #ece7d8;
+  --dim: #7b8a9e;
+
+  /* -- type -- */
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+
+  /* -- shadow / depth -- */
+  --shadow: 0 0 0 1px var(--line), 0 20px 50px -20px rgba(0, 0, 0, 0.8);
+
+  /* -- rhythm -- */
+  --wrap-max: 1160px;
+  --wrap-pad: 24px;
+
+  --ease-signal: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--void);
+  color: var(--bone);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* CRT scanline + vignette overlay across the whole page */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0 2px,
+    rgba(0, 0, 0, 0.14) 2px 3px
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* -- keyboard focus: always visible, always signal-green -- */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* -- layout primitive -- */
+.wrap {
+  max-width: var(--wrap-max);
+  margin: 0 auto;
+  padding: 0 var(--wrap-pad);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+.skip-link {
+  position: fixed;
+  top: -60px;
+  left: 12px;
+  z-index: 10000;
+  background: var(--green);
+  color: var(--void);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 12px 18px;
+  border-radius: 2px;
+  transition: top 0.18s var(--ease-signal);
+}
+
+.skip-link:focus-visible {
+  top: 12px;
+  outline: 2px solid var(--void);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* -- buttons -- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 13px 20px;
+  border: 1px solid var(--green);
+  color: var(--green);
+  border-radius: 2px;
+  transition:
+    background-color 0.18s var(--ease-signal),
+    color 0.18s var(--ease-signal),
+    box-shadow 0.18s var(--ease-signal),
+    transform 0.18s var(--ease-signal);
+  cursor: pointer;
+  background: transparent;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background: var(--green);
+  color: var(--void);
+  box-shadow: 0 0 22px -4px var(--green);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.btn--amber {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.btn--amber:hover {
+  background: var(--amber);
+  color: var(--void);
+  box-shadow: 0 0 22px -4px var(--amber);
+}
+
+.btn--amber-solid {
+  background: var(--amber);
+  color: var(--void);
+  border-color: var(--amber);
+}
+
+.btn--amber-solid:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 26px -4px var(--amber);
+  background: var(--amber);
+  color: var(--void);
+}
+
+.btn--ghost {
+  border-color: var(--line);
+  color: var(--dim);
+}
+
+.btn--ghost:hover {
+  border-color: var(--bone);
+  color: var(--bone);
+  background: transparent;
+  box-shadow: none;
+}
+
+/* live indicator dot, shared by nav / hero / dropdown / channel cards */
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red);
+  flex-shrink: 0;
+  animation: blink 1.8s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes eq {
+  0%,
+  100% {
+    height: 20%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+/* -- scroll reveal, progressively enhanced via IntersectionObserver -- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(6px);
+  transition:
+    opacity 0.7s var(--ease-signal),
+    transform 0.7s var(--ease-signal),
+    filter 0.7s var(--ease-signal);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+/* staggered children — cards/tiles/rows cascade in once their section
+   lands, instead of the whole block appearing as one flat unit */
+.reveal .console > li,
+.reveal .merch-grid > *,
+.reveal .support-row > *,
+.reveal .slate > *,
+.reveal .discord-card,
+.reveal .join-bg {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(4px);
+  transition:
+    opacity 0.6s var(--ease-signal),
+    transform 0.6s var(--ease-signal),
+    filter 0.6s var(--ease-signal);
+}
+
+.reveal.in .console > li,
+.reveal.in .merch-grid > *,
+.reveal.in .support-row > *,
+.reveal.in .slate > *,
+.reveal.in .discord-card,
+.reveal.in .join-bg {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+.reveal.in .join-bg {
+  transition-delay: 0ms !important;
+}
+
+.reveal.in .discord-card {
+  transition-delay: 40ms;
+}
+
+.reveal .console > li:nth-child(1),
+.reveal .merch-grid > *:nth-child(1),
+.reveal .support-row > *:nth-child(1),
+.reveal .slate > *:nth-child(1) {
+  transition-delay: 40ms;
+}
+.reveal .console > li:nth-child(2),
+.reveal .merch-grid > *:nth-child(2),
+.reveal .support-row > *:nth-child(2),
+.reveal .slate > *:nth-child(2) {
+  transition-delay: 100ms;
+}
+.reveal .console > li:nth-child(3),
+.reveal .merch-grid > *:nth-child(3),
+.reveal .slate > *:nth-child(3) {
+  transition-delay: 160ms;
+}
+.reveal .console > li:nth-child(4) {
+  transition-delay: 220ms;
+}
+.reveal .console > li:nth-child(5) {
+  transition-delay: 280ms;
+}
+
+/* -- section shell shared across all main sections -- */
+.sec {
+  padding: 72px 0;
+  border-top: 1px solid var(--line);
+}
+
+.sec__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 38px;
+  flex-wrap: wrap;
+}
+
+.sec__head h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-size: clamp(28px, 4vw, 42px);
+}
+
+.sec__head p {
+  color: var(--dim);
+  max-width: 40ch;
+  font-size: 15px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --wrap-pad: 18px;
+  }
+
+  .sec {
+    padding: 52px 0;
+  }
+}

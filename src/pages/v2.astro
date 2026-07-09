@@ -1,0 +1,1417 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Icon from "../components/icons/Icon.astro";
+import { Image } from "astro:assets";
+import goblinTee from "../assets/merch-goblin-tee.webp";
+import partnerLogo from "../assets/partner-foxnsons-logo.jpg";
+import { getLatestEpisode } from "../lib/rss";
+
+let latest = null;
+try {
+  latest = await getLatestEpisode();
+} catch (err) {
+  console.error("[obdm] Failed to fetch RSS feed at build time:", err);
+}
+
+function formatTime(seconds: number): string {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  const mm = h > 0 ? String(m).padStart(2, "0") : String(m);
+  const ss = String(s).padStart(2, "0");
+  return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+
+const marqueeItems = [
+  "UFOS", "BIGFOOT", "CONSPIRACIES", "ANCIENT CIVILIZATIONS", "CURRENT EVENTS",
+  "THE PARANORMAL", "CALL 513·461·2175", "LIVE WED 7PM ET", "LIVE SAT 10:30AM ET",
+];
+
+const support = [
+  { name: "SubscribeStar", href: "https://www.subscribestar.com/obdm", icon: "star" as const },
+  { name: "Crypto / Tip Jar", href: "https://streamlabs.com/ourbigdumbmouth/tip", icon: "coin" as const },
+];
+---
+
+<Layout
+  title="OBDM Concept v2 — Kinetic Broadcast | Our Big Dumb Mouth"
+  description="Design-direction concept for the OBDM site rebuild — a bolder, kinetic-brutalist take on the same content."
+  episode={latest}
+>
+  <div class="concept-flag">
+    <span>CONCEPT PREVIEW</span> — not final copy, art, or code. A second design direction to react to.
+    <a href="/">← Back to v1</a>
+  </div>
+
+  <nav class="v2nav">
+    <div class="wrap v2nav__inner">
+      <a href="#top" class="v2nav__brand">OBDM</a>
+      <div class="v2nav__right">
+        <div class="v2nav__links">
+          <a href="#live">Podcast</a>
+          <a href="#merch">Shop</a>
+          <a href="#latest">Latest</a>
+        </div>
+        <a href="#join" class="v2btn v2btn--green">Join</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="marquee marquee--a" aria-hidden="true">
+    <div class="marquee__track">
+      {[...marqueeItems, ...marqueeItems].map((m) => (
+        <span>{m}</span>
+      ))}
+    </div>
+  </div>
+
+  <header class="v2hero reveal" id="top">
+    <video class="v2hero__video" autoplay muted loop playsinline preload="auto" tabindex="-1" aria-hidden="true">
+      <source src="/hero/obdm-hero-loop-2x.mp4" type="video/mp4" />
+    </video>
+    <div class="v2hero__scanlines" aria-hidden="true"></div>
+    <div class="v2hero__flicker" aria-hidden="true"></div>
+    <div class="v2hero__scrim" aria-hidden="true"></div>
+    <div class="v2hero__text">
+      <span class="v2tag">CH·88 — OBDM-TV</span>
+      <h1>OBDM</h1>
+      <p class="v2hero__full">OUR BIG DUMB MOUTH</p>
+      <p class="v2hero__kicker">Welcome to another fun-filled podcast adventure... Hooray!</p>
+      <p class="v2hero__lead">
+        OBDM is a live podcast and talk show hosted by MidNight Mike and Joe, with listeners like
+        you who call into the show to share their opinions on the topics we discuss — UFOs,
+        Bigfoot, conspiracies, the paranormal, ancient civilizations, current events, and more.
+      </p>
+      <div class="v2hero__cta">
+        <a href="https://www.twitch.tv/obdmpod" target="_blank" rel="noopener" class="v2btn v2btn--amber v2btn--lg" data-live-toggle>
+          <span class="live-dot" aria-hidden="true"></span>
+          <span data-live-label>Watch Live</span>
+        </a>
+        <span class="v2hero__alt">Also: <a href="https://rumble.com/user/obdm" target="_blank" rel="noopener">Rumble</a> · <a href="https://x.com/obdmpod" target="_blank" rel="noopener">X</a></span>
+      </div>
+    </div>
+  </header>
+
+  <ul class="v2social reveal">
+    {[
+      { name: "Rumble", href: "https://rumble.com/user/obdm", icon: "rumble" as const },
+      { name: "Twitch", href: "https://www.twitch.tv/obdmpod", icon: "twitch" as const },
+      { name: "YouTube", href: "https://www.youtube.com/@obdmpod", icon: "youtube" as const },
+      { name: "Instagram", href: "https://www.instagram.com/obdmpod/", icon: "instagram" as const },
+      { name: "X", href: "https://x.com/obdmpod", icon: "x" as const },
+    ].map((l) => (
+      <li>
+        <a href={l.href} target="_blank" rel="noopener">
+          <Icon name={l.icon} size={18} />
+          {l.name}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <main>
+    <section class="v2sec reveal" id="live">
+      <h2 class="v2h2">Join Live</h2>
+      <div class="v2slate">
+        <div class="v2slate__cell v2slate__cell--green">
+          <span class="v2lbl">Main Show</span>
+          <span class="v2slate__day">Wednesday</span>
+          <span class="v2slate__time">7:00 PM ET</span>
+          <p>Strange news. Alex Jones clips of the week.</p>
+        </div>
+        <div class="v2slate__cell v2slate__cell--amber">
+          <span class="v2lbl">Hangover Show</span>
+          <span class="v2slate__day">Saturday</span>
+          <span class="v2slate__time">10:30 AM ET</span>
+          <p>Saturday funday.</p>
+        </div>
+        <div class="v2slate__cell v2slate__cell--dark">
+          <span class="v2lbl"><Icon name="phone" size={14} /> Call the Hotline</span>
+          <a class="v2slate__phone" href="tel:+15134612175">513·461·2175</a>
+          <p>Call in during the live show; we usually up the phone on Saturdays.</p>
+        </div>
+      </div>
+
+      <ul class="v2console reveal-stagger">
+        <li><a href="https://rumble.com/user/obdm" target="_blank" rel="noopener"><Icon name="rumble" size={20} /><span>Rumble</span><small>Live stream</small></a></li>
+        <li><a href="https://www.twitch.tv/obdmpod" target="_blank" rel="noopener"><Icon name="twitch" size={20} /><span>Twitch</span><small>Live call-in</small></a></li>
+        <li><a href="https://www.youtube.com/@obdmpod" target="_blank" rel="noopener"><Icon name="youtube" size={20} /><span>YouTube</span><small>Video + clips</small></a></li>
+        <li>
+          <div class="v2chan v2chan--sub">
+            <Icon name="podcast" size={20} /><span>Subscribe</span>
+            <span class="v2chan__sub-links">
+              <a href="https://open.spotify.com/show/7FNTBMeeIG0WFyySnl6Ix3" target="_blank" rel="noopener">Spotify</a>
+              <a href="https://podcasts.apple.com/us/podcast/our-big-dumb-mouth/id261189509" target="_blank" rel="noopener">Apple</a>
+            </span>
+          </div>
+        </li>
+        <li><a href="https://ourbigdumbmouth.libsyn.com/rss" target="_blank" rel="noopener"><Icon name="rss" size={20} /><span>RSS</span><small>Own the feed</small></a></li>
+      </ul>
+    </section>
+
+    <section class="v2sec v2sec--violet reveal" id="join">
+      <h2 class="v2h2">Be a Part of the Magic</h2>
+
+      <a class="v2discord" href="https://www.patreon.com/obdm" target="_blank" rel="noopener">
+        <div class="v2discord__body">
+          <span class="v2sticker">SUPPORT THE SHOW</span>
+          <h3>Join the Discord</h3>
+          <p>Connect with the OBDM community where the show never stops.</p>
+          <span class="v2btn v2btn--dark">
+            Unlock with Patreon for $1+/mo <Icon name="arrow-right" size={14} />
+          </span>
+        </div>
+        <div class="v2discord__art" aria-hidden="true">
+          <picture>
+            <source srcset="/join/discord-saucer-still.webp" media="(prefers-reduced-motion: reduce)" />
+            <img
+              src="/join/discord-saucer.webp"
+              alt=""
+              width="520"
+              height="456"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
+      </a>
+
+      <div class="v2support-row">
+        <div class="v2card">
+          <h4>Support the Show</h4>
+          <p>Other ways to back the broadcast — no subscription required.</p>
+          <div class="v2support-links">
+            {support.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener">
+                <Icon name={s.icon} size={16} /> {s.name} <Icon name="arrow-right" size={14} />
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="v2card">
+          <h4>Keep in Touch</h4>
+          <p>Maybe we'll do a newsletter. Or an emergency blast. Probably not. But maybe...</p>
+          <form class="v2field" data-newsletter>
+            <label for="v2-email" class="visually-hidden">Email address</label>
+            <input id="v2-email" type="email" name="email" required placeholder="Enter your email address..." />
+            <button type="submit" class="v2btn v2btn--white">Sign Up</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="v2sec v2sec--amber reveal" id="merch">
+      <h2 class="v2h2">OBDM Shop</h2>
+      <div class="v2merch reveal-stagger">
+        <div class="v2merch__card">
+          <div class="v2merch__art v2merch__art--photo">
+            <Image src={goblinTee} alt="The Goblin OBDM tee" width={420} height={560} />
+          </div>
+          <span class="v2merch__name">The Goblin</span>
+          <span class="v2merch__desc">Dark grey cotton, phosphor-green front print</span>
+          <span class="v2merch__price">$28</span>
+        </div>
+        <div class="v2merch__card">
+          <div class="v2merch__art"><Icon name="tumbler" size={64} /></div>
+          <span class="v2merch__name">OBDM Tumbler</span>
+          <span class="v2merch__desc">Stainless steel, keeps coffee hot and smoothies cold</span>
+          <span class="v2merch__price">$32</span>
+        </div>
+        <div class="v2merch__card v2merch__card--partner">
+          <span class="v2sticker v2sticker--sm">PARTNER SPOT</span>
+          <div class="v2merch__art v2merch__art--photo">
+            <Image src={partnerLogo} alt="Fox N' Sons Coffee" width={420} height={102} />
+          </div>
+          <span class="v2merch__desc">Our house coffee. Fuels every broadcast.</span>
+          <span class="v2coupon">Code <b>PISS</b> for 10% off</span>
+        </div>
+      </div>
+      <a href="https://obdm-shop.fourthwall.com/" target="_blank" rel="noopener" class="v2btn v2btn--dark v2btn--lg">
+        Shop All
+      </a>
+    </section>
+
+    <section class="v2sec reveal" id="latest">
+      <h2 class="v2h2">Latest Transmission</h2>
+      {latest ? (
+        <div class="v2latest">
+          <span class="v2latest__no">{latest.episodeNumber ? `EPISODE ${latest.episodeNumber}` : "SPECIAL BROADCAST"}</span>
+          <h3 class="v2latest__title">{latest.cleanTitle}</h3>
+
+          {latest.audioUrl ? (
+            <div class="v2player" data-player>
+              <audio preload="none" data-audio src={latest.audioUrl} />
+              <button type="button" class="v2player__play" data-play aria-label="Play latest episode">
+                <Icon name="play" size={16} class="player__icon player__icon--play" />
+                <Icon name="pause" size={16} class="player__icon player__icon--pause" />
+              </button>
+              <div class="v2player__body">
+                <input class="v2player__seek" type="range" min="0" max="1000" value="0" data-seek aria-label="Seek playback position" />
+                <div class="v2player__time">
+                  <span data-current>0:00</span>
+                  <span data-duration>--:--</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <a href={latest.link} target="_blank" rel="noopener" class="v2btn v2btn--amber v2btn--lg">
+              <Icon name="play" size={14} /> Play Latest
+            </a>
+          )}
+
+          {latest.chapters.length > 0 ? (
+            <ol class="v2chapters" data-chapters>
+              {latest.chapters.map((ch) =>
+                latest.audioUrl ? (
+                  <li>
+                    <button type="button" class="v2chapter-row" data-seconds={ch.seconds}>
+                      <span class="t">{formatTime(ch.seconds)}</span>
+                      <span class="d">{ch.label}</span>
+                    </button>
+                  </li>
+                ) : (
+                  <li class="v2chapter-row v2chapter-row--static">
+                    <span class="t">{formatTime(ch.seconds)}</span>
+                    <span class="d">{ch.label}</span>
+                  </li>
+                ),
+              )}
+            </ol>
+          ) : (
+            <p class="v2fallback">{latest.summary}</p>
+          )}
+        </div>
+      ) : (
+        <p class="v2fallback">Feed's down for a second — check back shortly, or hit the RSS feed directly.</p>
+      )}
+    </section>
+  </main>
+
+  <footer class="v2foot">
+    <div class="wrap">
+      <div class="v2foot__grid">
+        <div>
+          <div class="v2foot__brand">Our Big Dumb Mouth</div>
+          <p>A weekly news / conspiracy / comedy podcast. UFOs, Bigfoot &amp; explicit content. If you listen to three episodes, you'll get it.</p>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <a href="https://rumble.com/user/obdm" target="_blank" rel="noopener">Rumble</a>
+          <a href="https://www.twitch.tv/obdmpod" target="_blank" rel="noopener">Twitch</a>
+          <a href="https://www.youtube.com/@obdmpod" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://www.instagram.com/obdmpod/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://x.com/obdmpod" target="_blank" rel="noopener">X</a>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <a href="tel:+15134612175">513·461·2175</a>
+          <a href="mailto:ourbigdumbmouth@gmail.com">ourbigdumbmouth@gmail.com</a>
+          <p>PO Box 708<br />Sunbury, OH 43074</p>
+        </div>
+      </div>
+      <div class="v2foot__big">SHABLAGOO</div>
+      <p class="v2foot__copy">© {new Date().getFullYear()} OBDM — Our Big Dumb Mouth</p>
+    </div>
+  </footer>
+</Layout>
+
+<style>
+  .concept-flag {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    background: var(--amber);
+    color: #0a0a0a;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-align: center;
+    padding: 9px 16px;
+  }
+
+  .concept-flag span {
+    font-weight: 700;
+  }
+
+  .concept-flag a {
+    margin-left: 14px;
+    text-decoration: underline;
+    font-weight: 700;
+  }
+
+  .v2nav {
+    position: sticky;
+    top: 34px;
+    z-index: 400;
+    background: #050505;
+    border-bottom: 3px solid var(--green);
+  }
+
+  .v2nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 76px;
+  }
+
+  .v2nav__brand {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--bone);
+  }
+
+  .v2nav__right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .v2nav__links {
+    display: flex;
+    gap: 28px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .v2nav__links a {
+    color: var(--dim);
+  }
+
+  .v2nav__links a:hover {
+    color: var(--green);
+  }
+
+  @media (max-width: 780px) {
+    .v2nav__links {
+      display: none;
+    }
+  }
+
+  .v2btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+    padding: 12px 20px;
+    border: 3px solid currentColor;
+    border-radius: 0;
+    transition: none;
+  }
+
+  .v2btn--green {
+    color: var(--green);
+  }
+  .v2btn--green:hover {
+    background: var(--green);
+    color: #050505;
+  }
+
+  .v2btn--amber {
+    color: var(--amber);
+  }
+  .v2btn--amber:hover {
+    background: var(--amber);
+    color: #050505;
+  }
+
+  .v2btn--dark {
+    color: #0a0a0a;
+    background: var(--bone);
+    border-color: #0a0a0a;
+  }
+  .v2btn--dark:hover {
+    background: #0a0a0a;
+    color: var(--bone);
+  }
+
+  .v2btn--white {
+    color: var(--bone);
+    border-color: var(--bone);
+  }
+  .v2btn--white:hover {
+    background: var(--bone);
+    color: #0a0a0a;
+  }
+
+  /* dim/unlit by default, only lights up + blinks when the schedule check
+     in Layout.astro confirms the show is actually live */
+  .v2btn .live-dot {
+    background: var(--dim);
+    box-shadow: none;
+    animation: none;
+  }
+
+  .v2btn.dropdown__toggle--live .live-dot {
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red);
+    animation: blink 1.4s steps(1) infinite;
+  }
+
+  .v2btn--lg {
+    font-size: 15px;
+    padding: 16px 28px;
+  }
+
+  .marquee {
+    background: var(--green);
+    color: #050505;
+    overflow: hidden;
+    border-bottom: 3px solid #050505;
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    gap: 40px;
+    padding: 10px 0;
+    animation: marquee-scroll 22s linear infinite;
+  }
+
+  .marquee__track span {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .marquee__track span::after {
+    content: "//";
+    margin-left: 40px;
+    opacity: 0.5;
+  }
+
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .v2hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 88vh;
+    background: #050505;
+    overflow: hidden;
+  }
+
+  .v2hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 72% 12%;
+    filter: saturate(1.1) contrast(1.05);
+  }
+
+  /* multi-layer gradients must use background-image, not the background
+     shorthand — the shorthand rendered opaque on this project before */
+  .v2hero__scrim {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(5, 5, 5, 0.94) 0%, rgba(5, 5, 5, 0.86) 30%, rgba(5, 5, 5, 0.45) 55%, rgba(5, 5, 5, 0) 78%),
+      linear-gradient(to top, rgba(5, 5, 5, 0.6) 0%, rgba(5, 5, 5, 0) 30%);
+    pointer-events: none;
+  }
+
+  .v2hero__text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 720px;
+    padding: 96px clamp(24px, 5vw, 72px);
+  }
+
+  .v2tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--dim);
+    margin-bottom: 20px;
+  }
+
+  .v2hero h1 {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: clamp(72px, 11vw, 160px);
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    color: var(--bone);
+  }
+
+  .v2hero__full {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    color: var(--dim);
+    margin: 14px 0 26px;
+  }
+
+  .v2hero__kicker {
+    font-family: var(--font-mono);
+    color: var(--ufo);
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  .v2hero__lead {
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 52ch;
+    color: #cfd6dd;
+    margin-bottom: 30px;
+  }
+
+  .v2hero__cta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .v2hero__alt {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .v2hero__alt a {
+    color: var(--dim);
+    text-decoration: underline;
+  }
+
+  .v2hero__flicker {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    mix-blend-mode: overlay;
+    animation: v2hero-flicker 7s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes v2hero-flicker {
+    0%,
+    91%,
+    100% {
+      opacity: 0;
+    }
+    92% {
+      opacity: 0.1;
+    }
+    92.6% {
+      opacity: 0.02;
+    }
+    93.2% {
+      opacity: 0.08;
+    }
+    94% {
+      opacity: 0;
+    }
+  }
+
+  .v2hero__scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0) 0 2px, rgba(0, 0, 0, 0.18) 2px 3px);
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .v2hero {
+      min-height: 76vh;
+    }
+
+    .v2hero__video {
+      object-position: 68% 12%;
+    }
+
+    /* narrow screens: darken the whole frame so copy stays readable */
+    .v2hero__scrim {
+      background-image:
+        linear-gradient(to right, rgba(5, 5, 5, 0.88) 0%, rgba(5, 5, 5, 0.72) 100%),
+        linear-gradient(to top, rgba(5, 5, 5, 0.6) 0%, rgba(5, 5, 5, 0) 40%);
+    }
+
+    .v2hero__text {
+      padding: 64px 24px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .v2hero__flicker {
+      display: none;
+    }
+  }
+
+  .v2social {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    background: #050505;
+    border-bottom: 3px solid var(--line);
+  }
+
+  .v2social a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 24px;
+    border-right: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--dim);
+  }
+
+  .v2social a:hover {
+    background: var(--green);
+    color: #050505;
+  }
+
+  main {
+    background: #050505;
+  }
+
+  .v2sec {
+    padding: 88px clamp(20px, 5vw, 72px);
+    border-bottom: 3px solid var(--line);
+  }
+
+  .v2sec--violet {
+    background: var(--ufo);
+  }
+
+  .v2sec--amber {
+    background: var(--amber);
+  }
+
+  .v2h2 {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: clamp(40px, 6vw, 76px);
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    color: var(--bone);
+  }
+
+  .v2sec--violet .v2h2,
+  .v2sec--amber .v2h2 {
+    color: #0a0a0a;
+  }
+
+  .v2slate {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 3px solid var(--line);
+    margin-bottom: 40px;
+  }
+
+  .v2slate__cell {
+    padding: 32px 26px;
+    border-right: 3px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: #0a0a0a;
+  }
+
+  .v2slate__cell:last-child {
+    border-right: none;
+  }
+
+  .v2slate__cell--green {
+    background: var(--green);
+    color: #0a0a0a;
+  }
+
+  .v2slate__cell--amber {
+    background: var(--amber);
+    color: #0a0a0a;
+  }
+
+  .v2lbl {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.75;
+  }
+
+  .v2slate__day {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: 34px;
+  }
+
+  .v2slate__time {
+    font-family: var(--font-mono);
+    font-size: 15px;
+  }
+
+  .v2slate__phone {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--bone);
+  }
+
+  .v2slate__cell p {
+    font-size: 13.5px;
+    margin-top: 4px;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 900px) {
+    .v2slate {
+      grid-template-columns: 1fr;
+    }
+    .v2slate__cell {
+      border-right: none;
+      border-bottom: 3px solid var(--line);
+    }
+  }
+
+  .v2console {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border: 3px solid var(--line);
+    border-top: none;
+  }
+
+  .v2console li {
+    border-right: 3px solid var(--line);
+    border-top: 3px solid var(--line);
+  }
+
+  .v2console li:last-child {
+    border-right: none;
+  }
+
+  .v2console a,
+  .v2chan {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 16px;
+    height: 100%;
+    color: var(--bone);
+  }
+
+  .v2console a:hover {
+    background: var(--green);
+    color: #0a0a0a;
+  }
+
+  .v2console span {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .v2console small {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  .v2console a:hover small {
+    color: #0a0a0a;
+  }
+
+  .v2chan__sub-links {
+    display: flex;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+  .v2chan__sub-links a {
+    color: var(--amber);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    .v2console {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .v2console li:nth-child(2n) {
+      border-right: none;
+    }
+  }
+
+  .v2discord {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    align-items: center;
+    gap: 24px;
+    border: 3px solid #0a0a0a;
+    background: rgba(10, 10, 10, 0.08);
+    padding: 48px;
+    margin-bottom: 40px;
+  }
+
+  .v2discord:hover {
+    background: rgba(10, 10, 10, 0.16);
+  }
+
+  .v2sticker {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    background: #0a0a0a;
+    color: var(--bone);
+    padding: 6px 14px;
+    transform: rotate(-3deg);
+    margin-bottom: 18px;
+  }
+
+  .v2sticker--sm {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+
+  .v2discord h3 {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+    margin-bottom: 12px;
+  }
+
+  .v2discord__body p {
+    color: rgba(10, 10, 10, 0.75);
+    font-size: 16px;
+    margin-bottom: 22px;
+    max-width: 62ch;
+  }
+
+  /* bounce, rim-light chase, and thruster burn are baked into the animated webp;
+     oversized + negative margins so the saucer breaks out of the card edges */
+  .v2discord__art img {
+    width: 130%;
+    max-width: 380px;
+    height: auto;
+    display: block;
+    margin: -72px auto -56px;
+    filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.35));
+  }
+
+  @media (max-width: 900px) {
+    .v2discord {
+      grid-template-columns: 1fr;
+      padding: 32px 24px;
+    }
+  }
+
+  .v2support-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 3px solid #0a0a0a;
+  }
+
+  .v2card {
+    padding: 32px;
+    background: #0a0a0a;
+    border-right: 3px solid #0a0a0a;
+  }
+
+  .v2card:last-child {
+    border-right: none;
+  }
+
+  .v2card h4 {
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--bone);
+    margin-bottom: 10px;
+  }
+
+  .v2card p {
+    color: rgba(236, 231, 216, 0.7);
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+
+  .v2support-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .v2support-links a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid var(--bone);
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--bone);
+  }
+
+  .v2support-links a:hover {
+    background: var(--bone);
+    color: #0a0a0a;
+  }
+
+  .v2field {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .v2field input {
+    flex: 1;
+    min-width: 180px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid var(--bone);
+    color: var(--bone);
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+  }
+
+  .v2field input::placeholder {
+    color: rgba(236, 231, 216, 0.5);
+  }
+
+  @media (max-width: 900px) {
+    .v2support-row {
+      grid-template-columns: 1fr;
+    }
+    .v2card {
+      border-right: none;
+      border-bottom: 3px solid #0a0a0a;
+    }
+  }
+
+  .v2merch {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 3px solid #0a0a0a;
+    margin-bottom: 40px;
+  }
+
+  .v2merch__card {
+    padding: 24px;
+    border-right: 3px solid #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+
+  .v2merch__card:last-child {
+    border-right: none;
+  }
+
+  .v2merch__art {
+    aspect-ratio: 4 / 5;
+    background: rgba(10, 10, 10, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a0a0a;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .v2merch__art--photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .v2merch__name {
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 20px;
+    color: #0a0a0a;
+  }
+
+  .v2merch__desc {
+    font-size: 13px;
+    color: rgba(10, 10, 10, 0.7);
+  }
+
+  .v2merch__price {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 18px;
+    color: #0a0a0a;
+  }
+
+  .v2coupon {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: #0a0a0a;
+  }
+
+  @media (max-width: 900px) {
+    .v2merch {
+      grid-template-columns: 1fr;
+    }
+    .v2merch__card {
+      border-right: none;
+      border-bottom: 3px solid #0a0a0a;
+    }
+  }
+
+  .v2latest {
+    border: 3px solid var(--line);
+    padding: 40px;
+  }
+
+  .v2latest__no {
+    font-family: var(--font-mono);
+    color: var(--ufo);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+
+  .v2latest__title {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: clamp(28px, 4vw, 46px);
+    letter-spacing: -0.02em;
+    color: var(--bone);
+    margin: 12px 0 24px;
+    line-height: 1.05;
+  }
+
+  .v2player {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 3px solid var(--amber);
+    padding: 14px 18px;
+  }
+
+  .v2player__play {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    background: var(--amber);
+    color: #050505;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .v2player__play:hover {
+    filter: brightness(1.1);
+  }
+
+  .v2player__play :global(.player__icon) {
+    position: absolute;
+  }
+
+  .v2player__play :global(.player__icon--play) {
+    margin-left: 2px;
+  }
+
+  .v2player__play :global(.player__icon--pause) {
+    display: none;
+  }
+
+  .v2player__play.is-playing :global(.player__icon--play) {
+    display: none;
+  }
+
+  .v2player__play.is-playing :global(.player__icon--pause) {
+    display: block;
+  }
+
+  .v2player__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .v2player__seek {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--line);
+    cursor: pointer;
+  }
+
+  .v2player__seek::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 0;
+    background: var(--amber);
+  }
+
+  .v2player__seek::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: none;
+    border-radius: 0;
+    background: var(--amber);
+  }
+
+  .v2player__time {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .v2chapters {
+    list-style: none;
+    margin-top: 30px;
+    border-top: 3px solid var(--line);
+    column-gap: 40px;
+  }
+
+  @media (min-width: 700px) {
+    .v2chapters {
+      columns: 2;
+    }
+  }
+
+  .v2chapters li {
+    break-inside: avoid;
+  }
+
+  /* buttons carry a UA default border — reset it or rows render as boxes */
+  .v2chapter-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px dashed var(--line);
+    font-size: 14px;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+  }
+
+  button.v2chapter-row {
+    cursor: pointer;
+  }
+
+  button.v2chapter-row:hover,
+  .v2chapter-row.is-active {
+    background: rgba(255, 158, 61, 0.08);
+  }
+
+  button.v2chapter-row:hover .t,
+  .v2chapter-row.is-active .t {
+    color: var(--bone);
+  }
+
+  .v2chapter-row .t {
+    font-family: var(--font-mono);
+    color: var(--green);
+    min-width: 3.5em;
+    flex-shrink: 0;
+  }
+
+  .v2chapter-row .d {
+    color: #c9d1db;
+  }
+
+  .v2fallback {
+    color: var(--dim);
+  }
+
+  .v2foot {
+    background: #050505;
+    border-top: 3px solid var(--green);
+    padding: 60px 0 40px;
+  }
+
+  .v2foot__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 36px;
+    margin-bottom: 50px;
+  }
+
+  .v2foot h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+
+  .v2foot a,
+  .v2foot p {
+    display: block;
+    color: var(--dim);
+    font-size: 14px;
+    margin-bottom: 9px;
+  }
+
+  .v2foot a:hover {
+    color: var(--bone);
+  }
+
+  .v2foot__brand {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--bone);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .v2foot__grid > div:first-child p {
+    color: var(--dim);
+    font-size: 14px;
+    max-width: 42ch;
+  }
+
+  .v2foot__big {
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: clamp(48px, 12vw, 140px);
+    letter-spacing: -0.04em;
+    text-align: center;
+    color: var(--green);
+    line-height: 0.9;
+  }
+
+  .v2foot__copy {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 780px) {
+    .v2foot__grid {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track,
+    .v2discord__art svg {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-player]").forEach((root) => {
+    const audio = root.querySelector<HTMLAudioElement>("[data-audio]");
+    const playBtn = root.querySelector<HTMLButtonElement>("[data-play]");
+    const seek = root.querySelector<HTMLInputElement>("[data-seek]");
+    const currentEl = root.querySelector<HTMLElement>("[data-current]");
+    const durationEl = root.querySelector<HTMLElement>("[data-duration]");
+    if (!audio || !playBtn || !seek) return;
+
+    function formatTime(seconds: number): string {
+      if (!isFinite(seconds) || seconds < 0) return "0:00";
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = Math.floor(seconds % 60);
+      const mm = h > 0 ? String(m).padStart(2, "0") : String(m);
+      const ss = String(s).padStart(2, "0");
+      return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+    }
+
+    let dragging = false;
+
+    playBtn.addEventListener("click", () => {
+      if (audio.paused) audio.play();
+      else audio.pause();
+    });
+
+    audio.addEventListener("play", () => {
+      playBtn.classList.add("is-playing");
+      playBtn.setAttribute("aria-label", "Pause");
+    });
+
+    audio.addEventListener("pause", () => {
+      playBtn.classList.remove("is-playing");
+      playBtn.setAttribute("aria-label", "Play latest episode");
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+      seek.max = String(Math.floor(audio.duration));
+      if (durationEl) durationEl.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      if (!dragging) seek.value = String(Math.floor(audio.currentTime));
+      if (currentEl) currentEl.textContent = formatTime(audio.currentTime);
+      updateActiveChapter();
+    });
+
+    seek.addEventListener("pointerdown", () => (dragging = true));
+    seek.addEventListener("pointerup", () => (dragging = false));
+    seek.addEventListener("input", () => {
+      audio.currentTime = Number(seek.value);
+      if (currentEl) currentEl.textContent = formatTime(audio.currentTime);
+    });
+
+    const chapterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-chapters] button.v2chapter-row"));
+
+    function updateActiveChapter() {
+      if (!audio) return;
+      let active: HTMLButtonElement | null = null;
+      for (const btn of chapterButtons) {
+        const secs = Number(btn.getAttribute("data-seconds"));
+        if (audio.currentTime >= secs) active = btn;
+      }
+      chapterButtons.forEach((b) => b.classList.toggle("is-active", b === active));
+    }
+
+    chapterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const secs = Number(btn.getAttribute("data-seconds"));
+        audio.currentTime = secs;
+        audio.play();
+      });
+    });
+  });
+</script>

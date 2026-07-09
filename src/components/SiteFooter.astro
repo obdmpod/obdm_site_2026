@@ -1,0 +1,135 @@
+---
+import Icon from "./icons/Icon.astro";
+---
+
+<footer>
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <div class="foot__brand">Our Big Dumb Mouth</div>
+        <p>
+          A weekly news / conspiracy / comedy podcast. UFOs, Bigfoot &amp; explicit content. If
+          you listen to three episodes, you'll get it.
+        </p>
+      </div>
+      <div class="foot">
+        <h4>Connect</h4>
+        <a href="https://rumble.com/user/obdm" target="_blank" rel="noopener">Rumble</a>
+        <a href="https://www.twitch.tv/obdmpod" target="_blank" rel="noopener">Twitch</a>
+        <a href="https://www.youtube.com/@obdmpod" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://www.instagram.com/obdmpod/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://x.com/obdmpod" target="_blank" rel="noopener">X</a>
+      </div>
+      <div class="foot">
+        <h4>Contact</h4>
+        <a href="tel:+15134612175">
+          <Icon name="phone" size={13} class="foot__ico" />
+          513·461·2175
+        </a>
+        <a href="mailto:ourbigdumbmouth@gmail.com">
+          <Icon name="mail" size={13} class="foot__ico" />
+          ourbigdumbmouth@gmail.com
+        </a>
+        <p>
+          <Icon name="mailbox" size={13} class="foot__ico" />
+          PO Box 708<br />Sunbury, OH 43074
+        </p>
+      </div>
+    </div>
+    <div class="ascii">
+      ▀▄▀▄▀ <span class="big">SHABLAGOO</span> ▀▄▀▄▀<br />
+      © {new Date().getFullYear()} OBDM — Our Big Dumb Mouth
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 52px 0 40px;
+    background: var(--void-2);
+  }
+
+  .foot__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 36px;
+    margin-bottom: 40px;
+  }
+
+  .foot h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+
+  .foot a {
+    color: var(--dim);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+    transition: color 0.2s;
+  }
+
+  .foot p {
+    color: var(--dim);
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 9px;
+  }
+
+  .foot :global(.foot__ico) {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .foot a:hover,
+  .foot a:focus-visible {
+    color: var(--bone);
+  }
+
+  .foot__brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--bone);
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .foot__grid > div:first-child p {
+    color: var(--dim);
+    font-size: 14px;
+    max-width: 42ch;
+  }
+
+  .ascii {
+    font-family: var(--font-mono);
+    color: var(--green-dim);
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+    line-height: 1.8;
+  }
+
+  .ascii .big {
+    color: var(--green);
+    text-shadow: 0 0 14px rgba(70, 245, 160, 0.45);
+  }
+
+  @media (max-width: 780px) {
+    .foot__grid {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+  }
+</style>

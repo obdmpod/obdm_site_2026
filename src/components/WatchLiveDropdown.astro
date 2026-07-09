@@ -1,0 +1,164 @@
+---
+import Icon from "./icons/Icon.astro";
+
+interface Props {
+  variant?: "nav" | "hero";
+  id: string;
+}
+
+const { variant = "nav", id } = Astro.props;
+
+const platforms = [
+  { name: "Twitch", href: "https://www.twitch.tv/obdmpod", icon: "twitch" as const, tag: "Main" },
+  { name: "Rumble", href: "https://rumble.com/user/obdm", icon: "rumble" as const },
+  { name: "X / Twitter", href: "https://x.com/obdmpod", icon: "x" as const },
+];
+---
+
+<div class="dropdown" data-variant={variant}>
+  <button
+    class={`btn ${variant === "hero" ? "btn--amber-solid" : "btn--amber"} dropdown__toggle`}
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-controls={id}
+    data-live-toggle
+  >
+    <span class="live-dot" aria-hidden="true"></span>
+    <span data-live-label>Watch Live</span>
+    <Icon name="chevron-down" size={13} />
+  </button>
+  <div class="dropdown__menu" id={id} role="menu">
+    {
+      platforms.map((p) => (
+        <a href={p.href} target="_blank" rel="noopener" role="menuitem">
+          <Icon name={p.icon} size={17} />
+          <span>{p.name}</span>
+          {p.tag && <small>{p.tag}</small>}
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .dropdown {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .dropdown__menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 210px;
+    background: var(--void-2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.8);
+    padding: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition:
+      opacity 0.16s var(--ease-signal),
+      transform 0.16s var(--ease-signal),
+      visibility 0.16s;
+    z-index: 300;
+  }
+
+  .dropdown.open .dropdown__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown__menu a {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 11px 12px;
+    border-radius: 3px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--bone);
+    transition: background-color 0.14s, color 0.14s;
+  }
+
+  .dropdown__menu a:hover,
+  .dropdown__menu a:focus-visible {
+    background: var(--panel);
+    color: var(--amber);
+  }
+
+  .dropdown__menu a svg {
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+
+  .dropdown__menu a small {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dropdown__toggle svg:last-child {
+    transition: transform 0.18s var(--ease-signal);
+  }
+
+  .dropdown.open .dropdown__toggle svg:last-child {
+    transform: rotate(180deg);
+  }
+
+  /* Watch Live reads as a real, clickable CTA at all times — amber
+     outline, visible dot. It only fills solid and the dot starts
+     flashing once the schedule check in Layout.astro confirms the show
+     is actually on; the rest of the time the dot just sits dim, like an
+     unlit indicator light rather than a broken control. */
+  .dropdown__toggle .live-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--dim);
+    box-shadow: none;
+    animation: none;
+  }
+
+  .dropdown__toggle--live .live-dot {
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red);
+    animation: blink 1.4s steps(1) infinite;
+  }
+
+  .dropdown__toggle.btn--amber,
+  .dropdown__toggle.btn--amber-solid {
+    background: rgba(255, 158, 61, 0.07);
+    border-color: var(--amber);
+    color: var(--amber);
+    box-shadow: none;
+  }
+
+  .dropdown__toggle.btn--amber:hover,
+  .dropdown__toggle.btn--amber-solid:hover {
+    background: rgba(255, 158, 61, 0.16);
+    border-color: var(--amber);
+    color: var(--amber);
+    box-shadow: none;
+  }
+
+  .dropdown__toggle--live.btn--amber,
+  .dropdown__toggle--live.btn--amber-solid {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--void);
+    box-shadow: 0 0 22px -4px var(--amber);
+  }
+
+  .dropdown__toggle--live.btn--amber:hover,
+  .dropdown__toggle--live.btn--amber-solid:hover {
+    background: var(--amber);
+    color: var(--void);
+    filter: brightness(1.08);
+  }
+</style>

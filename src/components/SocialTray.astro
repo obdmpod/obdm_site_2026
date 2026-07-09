@@ -1,0 +1,85 @@
+---
+import Icon from "./icons/Icon.astro";
+
+const links = [
+  { name: "Rumble", href: "https://rumble.com/user/obdm", icon: "rumble" as const },
+  { name: "Twitch", href: "https://www.twitch.tv/obdmpod", icon: "twitch" as const },
+  { name: "YouTube", href: "https://www.youtube.com/@obdmpod", icon: "youtube" as const },
+  { name: "Instagram", href: "https://www.instagram.com/obdmpod/", icon: "instagram" as const },
+  { name: "X", href: "https://x.com/obdmpod", icon: "x" as const },
+];
+---
+
+<div class="tray">
+  <div class="wrap tray__inner">
+    <span class="tray__lbl">FIND US</span>
+    <ul class="tray__links">
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} target="_blank" rel="noopener">
+              <Icon name={l.icon} size={15} />
+              <span>{l.name}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  .tray {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--void-2);
+  }
+
+  .tray__inner {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding: 16px 0;
+    flex-wrap: wrap;
+  }
+
+  .tray__lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green);
+    white-space: nowrap;
+  }
+
+  .tray__links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .tray__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 9px 15px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: var(--dim);
+    transition:
+      border-color 0.16s var(--ease-signal),
+      color 0.16s var(--ease-signal),
+      transform 0.16s var(--ease-signal);
+  }
+
+  .tray__links a:hover,
+  .tray__links a:focus-visible {
+    border-color: var(--green);
+    color: var(--bone);
+    transform: translateY(-2px);
+  }
+</style>

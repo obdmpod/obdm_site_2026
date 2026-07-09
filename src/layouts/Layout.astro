@@ -1,0 +1,254 @@
+---
+import { getImage } from "astro:assets";
+import heroPoster from "../assets/hero-poster.webp";
+import type { Episode } from "../lib/rss";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  episode?: Episode | null;
+}
+
+const { title, description, episode = null } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const ogImage = await getImage({
+  src: heroPoster,
+  width: 1200,
+  height: 630,
+  format: "jpg",
+  quality: 82,
+});
+const ogImageURL = new URL(ogImage.src, Astro.site);
+
+const SITE_NAME = "Our Big Dumb Mouth";
+const SAME_AS = [
+  "https://www.twitch.tv/obdmpod",
+  "https://rumble.com/user/obdm",
+  "https://www.youtube.com/@obdmpod",
+  "https://www.instagram.com/obdmpod/",
+  "https://x.com/obdmpod",
+  "https://open.spotify.com/show/7FNTBMeeIG0WFyySnl6Ix3",
+  "https://podcasts.apple.com/us/podcast/our-big-dumb-mouth/id261189509",
+  "https://odysee.com/@obdm:0",
+];
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  alternateName: "OBDM",
+  url: "https://obdmpod.com",
+  logo: episode?.imageUrl ?? ogImageURL.toString(),
+  email: "ourbigdumbmouth@gmail.com",
+  telephone: "+1-513-461-2175",
+  address: {
+    "@type": "PostalAddress",
+    postOfficeBoxNumber: "708",
+    addressLocality: "Sunbury",
+    addressRegion: "OH",
+    postalCode: "43074",
+    addressCountry: "US",
+  },
+  sameAs: SAME_AS,
+};
+
+const episodeSchema = episode && {
+  "@context": "https://schema.org",
+  "@type": "PodcastEpisode",
+  url: episode.link,
+  name: episode.cleanTitle,
+  datePublished: new Date(episode.pubDate).toISOString(),
+  description: episode.summary || description,
+  ...(episode.episodeNumber ? { episodeNumber: episode.episodeNumber } : {}),
+  ...(episode.audioUrl
+    ? {
+        associatedMedia: {
+          "@type": "MediaObject",
+          contentUrl: episode.audioUrl,
+          encodingFormat: episode.audioType ?? "audio/mpeg",
+        },
+      }
+    : {}),
+  partOfSeries: {
+    "@type": "PodcastSeries",
+    name: SITE_NAME,
+    url: "https://obdmpod.com",
+  },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0e14" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
+    {episodeSchema && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(episodeSchema)} />
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#top">Skip to content</a>
+    <slot />
+
+    <script>
+      import { getScheduleStatus } from "../lib/live-status";
+
+      (function () {
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // Live status — schedule tier (works on static hosting, no backend).
+        // See src/lib/live-status.ts for the Twitch-verified upgrade path.
+        function applyLiveStatus() {
+          var status = getScheduleStatus();
+
+          document.querySelectorAll<HTMLElement>("[data-live-badge]").forEach(function (el) {
+            el.classList.toggle("is-offline", !status.live);
+            var text = el.querySelector("[data-live-text]");
+            if (text) text.textContent = status.live ? "ON AIR" : "OFF AIR";
+            el.title = status.live ? "Live now" : "Next show: " + status.next;
+          });
+
+          document.querySelectorAll<HTMLElement>("[data-live-toggle]").forEach(function (btn) {
+            btn.classList.toggle("dropdown__toggle--live", status.live);
+            var label = btn.querySelector("[data-live-label]");
+            if (label) label.textContent = status.live ? "Live Now" : "Watch Live";
+            btn.title = status.live ? "We're live right now" : "Next show: " + status.next;
+          });
+
+          document.querySelectorAll<HTMLElement>("[data-live-chan]").forEach(function (el) {
+            el.classList.toggle("chan--live", status.live);
+            var text = el.querySelector<HTMLElement>("[data-live-text]");
+            if (text) {
+              var offlineText = text.getAttribute("data-offline-text") || text.textContent || "";
+              text.textContent = status.live ? "On air now" : offlineText;
+            }
+          });
+        }
+        applyLiveStatus();
+        setInterval(applyLiveStatus, 60000);
+
+        // Reusable dropdown behavior (nav + hero "Watch Live")
+        document.querySelectorAll<HTMLElement>(".dropdown").forEach(function (dd) {
+          var btn = dd.querySelector<HTMLButtonElement>(".dropdown__toggle");
+          if (!btn) return;
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var open = dd.classList.contains("open");
+            document.querySelectorAll(".dropdown.open").forEach(function (o) {
+              o.classList.remove("open");
+              o.querySelector(".dropdown__toggle")?.setAttribute("aria-expanded", "false");
+            });
+            if (!open) {
+              dd.classList.add("open");
+              btn!.setAttribute("aria-expanded", "true");
+            }
+          });
+        });
+        document.addEventListener("click", function () {
+          document.querySelectorAll(".dropdown.open").forEach(function (o) {
+            o.classList.remove("open");
+            o.querySelector(".dropdown__toggle")?.setAttribute("aria-expanded", "false");
+          });
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            document.querySelectorAll(".dropdown.open").forEach(function (o) {
+              o.classList.remove("open");
+              o.querySelector(".dropdown__toggle")?.setAttribute("aria-expanded", "false");
+            });
+          }
+        });
+
+        // Scroll reveal
+        if ("IntersectionObserver" in window && !reduce) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("in");
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.12 },
+          );
+          document.querySelectorAll(".reveal").forEach(function (el) {
+            io.observe(el);
+          });
+        } else {
+          document.querySelectorAll(".reveal").forEach(function (el) {
+            el.classList.add("in");
+          });
+        }
+
+        // Hero parallax — background drifts slower than scroll, foreground
+        // content stays put. Transform-only, rAF-throttled, GPU-safe.
+        var heroImg = document.querySelector<HTMLElement>(".hero__bg-img");
+        if (heroImg && !reduce) {
+          // scaled up 1.15x to give the translate room without exposing edges
+          var ticking = false;
+          var applyParallax = function () {
+            var y = Math.min(window.scrollY, window.innerHeight * 1.2);
+            heroImg!.style.transform = "translate3d(0, " + Math.round(y * 0.18) + "px, 0) scale(1.15)";
+            ticking = false;
+          };
+          applyParallax();
+          window.addEventListener(
+            "scroll",
+            function () {
+              if (!ticking) {
+                requestAnimationFrame(applyParallax);
+                ticking = true;
+              }
+            },
+            { passive: true },
+          );
+        }
+
+        // Nav gains a slightly heavier backdrop once the page has scrolled
+        var nav = document.querySelector<HTMLElement>("nav");
+        if (nav) {
+          var setNavState = function () {
+            nav!.classList.toggle("is-scrolled", window.scrollY > 24);
+          };
+          setNavState();
+          document.addEventListener("scroll", setNavState, { passive: true });
+        }
+      })();
+    </script>
+  </body>
+</html>

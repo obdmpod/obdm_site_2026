@@ -1,0 +1,88 @@
+---
+---
+
+<nav>
+  <div class="wrap nav__inner">
+    <a href="#top" class="brand">OBDM</a>
+    <div class="nav__right">
+      <div class="nav__links">
+        <a href="#live">Podcast</a>
+        <a href="#merch">Shop</a>
+        <a href="#latest">Latest</a>
+      </div>
+      <a href="#join" class="btn nav__join">Join</a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    backdrop-filter: blur(10px);
+    background: rgba(10, 14, 20, 0.72);
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color 0.3s var(--ease-signal),
+      border-color 0.3s var(--ease-signal),
+      box-shadow 0.3s var(--ease-signal);
+  }
+
+  nav.is-scrolled {
+    background: rgba(10, 14, 20, 0.9);
+    border-bottom-color: var(--line);
+    box-shadow: 0 12px 30px -20px rgba(0, 0, 0, 0.8);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-size: 20px;
+  }
+
+  .nav__right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+
+  .nav__links > a {
+    color: var(--dim);
+    transition: color 0.2s;
+  }
+
+  .nav__links > a:hover {
+    color: var(--bone);
+  }
+
+  .nav__join {
+    padding: 10px 16px;
+  }
+
+  @media (max-width: 780px) {
+    .nav__links {
+      display: none;
+    }
+  }
+</style>
