@@ -2,8 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import Icon from "../components/icons/Icon.astro";
 import { Image } from "astro:assets";
-import goblinTee from "../assets/merch-goblin-tee.webp";
-import partnerLogo from "../assets/partner-foxnsons-logo.jpg";
+import tippyTee from "../assets/merch-tippy-tee-fw.webp";
+import tippyMug from "../assets/merch-tippy-mug-black.webp";
+import partnerShot from "../assets/partner-foxnsons.webp";
 import { getLatestEpisode } from "../lib/rss";
 
 let latest = null;
@@ -205,25 +206,27 @@ const support = [
       <div class="v2merch reveal-stagger">
         <div class="v2merch__card">
           <div class="v2merch__art v2merch__art--photo">
-            <Image src={goblinTee} alt="The Goblin OBDM tee" width={420} height={560} />
+            <Image src={tippyTee} alt="Tippy Top tee — black shirt with the TIPPY TOP flying-saucer badge" width={420} height={560} />
           </div>
-          <span class="v2merch__name">The Goblin</span>
-          <span class="v2merch__desc">Dark grey cotton, phosphor-green front print</span>
-          <span class="v2merch__price">$28</span>
+          <span class="v2merch__name">Tippy Top Supersoft Tee</span>
+          <span class="v2merch__desc">Bella+Canvas 3001 &middot; soft, lightweight 4.2oz cotton</span>
+          <span class="v2merch__price">$26</span>
         </div>
         <div class="v2merch__card">
-          <div class="v2merch__art"><Icon name="tumbler" size={64} /></div>
-          <span class="v2merch__name">OBDM Tumbler</span>
-          <span class="v2merch__desc">Stainless steel, keeps coffee hot and smoothies cold</span>
-          <span class="v2merch__price">$32</span>
+          <div class="v2merch__art v2merch__art--photo">
+            <Image src={tippyMug} alt="Tippy Top mug — black glossy ceramic with the TIPPY TOP badge" width={420} height={560} />
+          </div>
+          <span class="v2merch__name">Tippy Top Mug</span>
+          <span class="v2merch__desc">Black glossy ceramic &middot; 11oz and 15oz</span>
+          <span class="v2merch__price">from $13.95</span>
         </div>
         <div class="v2merch__card v2merch__card--partner">
           <span class="v2sticker v2sticker--sm">PARTNER SPOT</span>
-          <div class="v2merch__art v2merch__art--photo">
-            <Image src={partnerLogo} alt="Fox N' Sons Coffee" width={420} height={102} />
-          </div>
+          <a class="v2merch__art v2merch__art--photo" href="https://www.foxnsons.com/shop" target="_blank" rel="noopener">
+            <Image src={partnerShot} alt="Fox N' Sons Coffee — a bag of Costa Rican Natural whole bean beside a branded stoneware mug" width={420} height={560} />
+          </a>
           <span class="v2merch__desc">Our house coffee. Fuels every broadcast.</span>
-          <span class="v2coupon">Code <b>PISS</b> for 10% off</span>
+          <span class="v2coupon">Code <b>PISS</b> &mdash; 15% off orders over $30</span>
         </div>
       </div>
       <a href="https://obdm-shop.fourthwall.com/" target="_blank" rel="noopener" class="v2btn v2btn--dark v2btn--lg">

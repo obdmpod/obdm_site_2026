@@ -338,7 +338,8 @@ svg {
 .reveal .slate > *:nth-child(3) {
   transition-delay: 160ms;
 }
-.reveal .console > li:nth-child(4) {
+.reveal .console > li:nth-child(4),
+.reveal .merch-grid > *:nth-child(4) {
   transition-delay: 220ms;
 }
 .reveal .console > li:nth-child(5) {

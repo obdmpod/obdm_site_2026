@@ -1,8 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import Icon from "./icons/Icon.astro";
-import partnerLogo from "../assets/partner-foxnsons-logo.jpg";
-import goblinTee from "../assets/merch-goblin-tee.webp";
+import partnerShot from "../assets/partner-foxnsons.webp";
+import tippyTee from "../assets/merch-tippy-tee-fw.webp";
+import tippyMug from "../assets/merch-tippy-mug-black.webp";
+import coolantBottle from "../assets/merch-coolant-black.webp";
 ---
 
 <section class="sec reveal" id="merch">
@@ -15,58 +17,68 @@ import goblinTee from "../assets/merch-goblin-tee.webp";
     </div>
 
     <div class="merch-grid">
-      <div class="merch-card">
+      <a class="merch-card" href="https://obdm-shop.fourthwall.com/products/tippy-top-supersoft-tee" target="_blank" rel="noopener">
         <div class="merch-card__art merch-card__art--photo">
-          <Image src={goblinTee} alt="The Goblin OBDM tee — dark grey cotton shirt with a phosphor-green goblin print" width={480} height={640} />
+          <Image src={tippyTee} alt="Tippy Top Supersoft Tee — black shirt with the TIPPY TOP flying-saucer badge on the chest" width={480} height={640} />
         </div>
         <div class="merch-card__body">
-          <span class="merch-card__name">The Goblin</span>
-          <span class="merch-card__desc">Dark grey cotton, phosphor-green front print</span>
-          <span class="merch-card__price">
-            $28 <span class="fpo-tag">Price TBD</span>
-          </span>
+          <span class="merch-card__name">Tippy Top Supersoft Tee</span>
+          <span class="merch-card__desc">Bella+Canvas 3001 &middot; soft, lightweight 4.2oz cotton</span>
+          <span class="merch-card__price">$26</span>
         </div>
-      </div>
+      </a>
 
-      <div class="merch-card">
-        <div class="merch-card__art">
-          <Icon name="tumbler" size={52} />
+      <a class="merch-card" href="https://obdm-shop.fourthwall.com/products/tippy-top-mug" target="_blank" rel="noopener">
+        <div class="merch-card__art merch-card__art--photo">
+          <Image src={tippyMug} alt="Tippy Top Mug — black glossy ceramic with the TIPPY TOP flying-saucer badge" width={480} height={640} />
         </div>
         <div class="merch-card__body">
-          <span class="merch-card__name">OBDM Tumbler</span>
-          <span class="merch-card__desc">Stainless steel, keeps coffee hot and smoothies cold</span>
-          <span class="merch-card__price">
-            $32 <span class="fpo-tag">FPO</span>
-          </span>
+          <span class="merch-card__name">Tippy Top Mug</span>
+          <span class="merch-card__desc">Black glossy ceramic &middot; 11oz and 15oz</span>
+          <span class="merch-card__price">from $13.95</span>
         </div>
-      </div>
+      </a>
+
+      <a class="merch-card" href="https://obdm-shop.fourthwall.com/products/data-center-coolant-black" target="_blank" rel="noopener">
+        <div class="merch-card__art merch-card__art--photo">
+          <Image src={coolantBottle} alt="Data Center Coolant bottle — black insulated stainless steel with the DATA CENTER COOLANT lockup" width={480} height={640} />
+        </div>
+        <div class="merch-card__body">
+          <span class="merch-card__name">Data Center Coolant</span>
+          <span class="merch-card__desc">17oz insulated stainless &middot; hot or cold for 6 hours</span>
+          <span class="merch-card__price">$25</span>
+        </div>
+      </a>
 
       <div class="merch-card merch-card--partner">
-        <span class="merch-card__eyebrow">◆ Partner Spot · rentable</span>
-        <div class="partner-plaque">
-          <Image src={partnerLogo} alt="Fox N' Sons Coffee" width={420} height={102} />
-        </div>
+        <a
+          class="merch-card__art merch-card__art--photo partner-shot"
+          href="https://www.foxnsons.com/shop"
+          target="_blank"
+          rel="noopener"
+        >
+          <Image src={partnerShot} alt="Fox N' Sons Coffee — a bag of Costa Rican Natural whole bean beside a branded stoneware mug" width={480} height={640} />
+        </a>
         <div class="merch-card__body">
           <span class="merch-card__desc">Our house coffee. Fuels every broadcast.</span>
           <span class="coupon">
-            Code <b>PISS</b> for 10% off
+            Code <b>PISS</b> &mdash; 15% off orders over $30
           </span>
         </div>
         <a href="mailto:ourbigdumbmouth@gmail.com?subject=Partner%20with%20OBDM" class="merch-card__partner-cta">
-          This slot rotates — want it next?
+          Support our supporters!
           <Icon name="arrow-right" size={13} />
         </a>
       </div>
     </div>
 
-    <p class="fpo-note">// Tumbler has no product yet — mockup or real photo before launch. Goblin photo is real; price to confirm. A real coffee-bag shot would upgrade the partner slot too.</p>
   </div>
 </section>
 
 <style>
   .merch-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
   }
 
@@ -82,6 +94,11 @@ import goblinTee from "../assets/merch-goblin-tee.webp";
       border-color 0.18s var(--ease-signal),
       transform 0.18s var(--ease-signal),
       box-shadow 0.18s var(--ease-signal);
+  }
+
+  a.merch-card {
+    text-decoration: none;
+    color: inherit;
   }
 
   .merch-card:hover {
@@ -116,6 +133,7 @@ import goblinTee from "../assets/merch-goblin-tee.webp";
   }
 
   .merch-card__body {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -137,23 +155,14 @@ import goblinTee from "../assets/merch-goblin-tee.webp";
     font-family: var(--font-mono);
     color: var(--bone);
     font-size: 14px;
-    margin-top: 8px;
+    margin-top: auto;
+    padding-top: 12px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .fpo-tag {
-    font-family: var(--font-mono);
-    font-size: 9.5px;
-    letter-spacing: 0.1em;
-    color: var(--dim);
-    border: 1px dashed var(--line);
-    border-radius: 20px;
-    padding: 2px 7px;
-  }
-
-  /* --- partner card: distinct treatment, sparing violet accent --- */
+    /* --- partner card: distinct treatment, sparing violet accent --- */
   .merch-card--partner {
     background: linear-gradient(155deg, rgba(176, 107, 250, 0.07), var(--panel));
   }
@@ -172,21 +181,7 @@ import goblinTee from "../assets/merch-goblin-tee.webp";
     margin-bottom: 14px;
   }
 
-  .partner-plaque {
-    background: #f4efe6;
-    border-radius: 4px;
-    aspect-ratio: 3 / 4;
-    padding: 24px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 14px;
-  }
 
-  .partner-plaque :global(img) {
-    width: 100%;
-    height: auto;
-  }
 
   .coupon {
     font-family: var(--font-mono);
@@ -215,12 +210,10 @@ import goblinTee from "../assets/merch-goblin-tee.webp";
     color: var(--ufo);
   }
 
-  .fpo-note {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--green-dim);
-    letter-spacing: 0.03em;
-    margin-top: 20px;
+  @media (max-width: 1180px) {
+    .merch-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (max-width: 900px) {
@@ -228,8 +221,7 @@ import goblinTee from "../assets/merch-goblin-tee.webp";
       grid-template-columns: 1fr;
     }
 
-    .merch-card__art,
-    .partner-plaque {
+    .merch-card__art {
       aspect-ratio: 4 / 3;
     }
   }
