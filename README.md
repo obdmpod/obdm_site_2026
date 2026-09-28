@@ -1,43 +1,38 @@
-# Astro Starter Kit: Minimal
+# OBDM Website 2026
+
+Local website handoff and editable Astro source for the new Our Big Dumb Mouth website.
+
+Repository: https://github.com/obdmpod/obdm_site_2026
+
+## Current status
+
+No host or deployment has been established for this project. The original `READ ME FIRST.md` is retained as handoff documentation, but its claims about previous GitHub repositories, collaborator access, and a Netlify preview are unverified. Use this README and `memory-bank/` for the current project state.
+
+## Layout
+
+- `1 - Look at it/`: packaged local preview, with an alternative design under `v2/`.
+- `2 - Put it online/`: supplied static export; not yet checked against a fresh source build.
+- `3 - The source/obdm-site/`: editable Astro application.
+- `memory-bank/`: project continuity and unresolved decisions.
+
+Git tracks the full package from this repository root and retains the inherited source history. The Astro application remains in its original subdirectory.
+
+## Development
+
+The package declares Node.js **22.12.0 or newer**. From the repository root:
 
 ```sh
-npm create astro@latest -- --template minimal
+cd "3 - The source/obdm-site"
+npm install
+npm run build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Read the application's `AGENTS.md` before development. Dependencies and builds have not yet been validated in this workspace. A future host must run the build from the application subdirectory and publish its `dist/` output.
 
-## 🚀 Project Structure
+## Before launch
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Review both designs and confirm the hotline number.
+- Connect or remove the newsletter signup form.
+- Decide how to trigger rebuilds so the latest Libsyn episode stays current.
+- Review the schedule-based live indicator; it does not currently verify the actual stream.
+- Select hosting and validate the production build before deployment or domain changes.
