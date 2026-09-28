@@ -23,7 +23,9 @@ Current state: planning and initial review.
 - No dependency install, build, browser review, or deployment has been performed.
 - The user explicitly authorized pushing to the new repository. `git ls-remote` verified access and returned no refs (empty repository) before import. GitHub visibility and account permissions were not separately queried.
 - Initialized Git at the workspace root on `main`, retaining the inherited source commit history through `119f85c`. The original nested Git metadata was moved intact to `.git/inherited-source.git` as a local backup; it is not published.
-- Root `origin` is `https://github.com/obdmpod/obdm_site_2026.git`. The full handoff package and memory bank are being prepared for the initial push; push completion is not yet verified.
+- Root `origin` is `git@github.com:obdmpod/obdm_site_2026.git`. Initial import commit `d23c8a6` was pushed to `main`; `git ls-remote` confirmed the remote hash matched local HEAD and the working tree was clean. `main` tracks `origin/main`.
+- HTTPS push failed because credentials were unavailable. Existing `~/.ssh/config` authenticated successfully as `obdmpod`; SSH completed the push. This authentication result is scoped to this Mac.
+- Added a current root README and ignore rules. File contents were preserved; executable bits were normalized to match the index, retaining the launch/build scripts as executable.
 - File scan found no matching private-key, GitHub-token, or AWS-access-key patterns in the current package. Largest file is 8,299,407 bytes. This was a limited credential check, not a security audit.
 - Import commit author is Codex; the inherited repository had Joe configured and there was no global Git author identity.
 
@@ -67,8 +69,7 @@ Proposed follow-up work, not yet performed:
 2. Correct handoff documentation to reflect the actual project baseline.
 3. Install dependencies and validate the source build in the local environment.
 4. Resolve hotline and newsletter behavior, and decide how episode content should refresh.
-5. Complete and verify the initial push of workspace-root `main` to the new repository.
-6. Choose and establish hosting/deployment infrastructure when requested.
+5. Choose and establish hosting/deployment infrastructure when requested; the initial repository push is complete.
 
 ## Commands / Guidance
 
