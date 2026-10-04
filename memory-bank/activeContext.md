@@ -142,3 +142,17 @@ Source: User's GoDaddy custom-nameserver screenshot and live DNS/HTTPS queries f
 
 - Removed the alternate-concept link and its unused CSS from `src/pages/index.astro`. No other source links to `/v2` were found; the alternate page itself is retained.
 - Validation on Mac M4 / macOS / Codex desktop: network-enabled `npm run build` passed with RSS data; generated homepage has no v2 link, label, or preview styles. Initial sandboxed build could not resolve Libsyn, resolved by network-enabled rebuild.
+- Delivery: commit `a4abe3a` pushed to `main`; HTTPS fetch of `https://obdm-site-2026.pages.dev/` confirmed the alternate-concept link absent after Cloudflare rebuilt.
+
+## Discord Saucer Concepts — 2026-10-04
+
+- User requested replacements for the blue creature: traditional grey plus blond Nordic alien, preserving the flying saucer and pixel-art style.
+- Built-in image generation produced three concept PNGs in `output/imagegen/discord-saucer-concepts/`: `radio-hosts.png`, `coffee-break.png`, `odd-couple.png`. Exact prompts saved in `prompts.md`. All are 1536×1024 with alpha channels, inspected on Mac M4 / macOS / Codex desktop.
+- Concepts await user selection; no website asset replaced or deployed. Source: user request and generated files; writer: Codex.
+- User refinement: no microphones or headphones, very pale Nordic skin, emotionless expressions on both aliens. Revised concept saved as `pale-neutral-aliens.png` in the same folder; exact prompts in `pale-neutral-prompts.md`. Generated and visually checked on Mac M4 / macOS / Codex desktop; website unchanged pending selection.
+
+## Social Preview Alignment — 2026-10-04
+
+- User approved aligning social previews with v1. Homepage metadata title is now `OBDM — Our Big Dumb Mouth`; description matches the visible introduction and schedule, including Cretched and "most Wednesdays". Shared layout generates its 1200×630 preview from `hero-broadcast-still.webp` (wizard/T-Rex), replacing the older Bigfoot poster.
+- Mac M4 / macOS / Codex desktop validation: network-enabled build passed; generated description, Open Graph and Twitter fields verified, and generated JPEG visually inspected. Source: local source/build and user request; writer: Codex.
+- Live apex HTTPS fetch during diagnosis returned the new Astro site with the older metadata, confirming production serves the replacement site. `www` redirect and full functional QA remain unverified.
