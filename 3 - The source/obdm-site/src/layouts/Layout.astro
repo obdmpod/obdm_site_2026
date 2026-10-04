@@ -40,7 +40,7 @@ const organizationSchema = {
   "@type": "Organization",
   name: SITE_NAME,
   alternateName: "OBDM",
-  url: "https://obdmpod.com",
+  url: Astro.site!.toString(),
   logo: episode?.imageUrl ?? ogImageURL.toString(),
   email: "ourbigdumbmouth@gmail.com",
   telephone: "+1-513-461-2175",
@@ -75,7 +75,7 @@ const episodeSchema = episode && {
   partOfSeries: {
     "@type": "PodcastSeries",
     name: SITE_NAME,
-    url: "https://obdmpod.com",
+    url: Astro.site!.toString(),
   },
 };
 ---

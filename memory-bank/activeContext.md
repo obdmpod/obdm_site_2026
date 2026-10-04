@@ -21,7 +21,7 @@ Current state: preview deployed; production-domain migration pending. Cloudflare
 - Project memory initialization was explicitly approved by the user.
 - Removed newsletter cards and form-specific styles from `JoinSignal.astro` and `v2.astro`, and expanded the remaining support card to full width on 2026-10-04.
 - On Mac (Node v25.4.0), `npm ci`, `npm run build`, and `npm run astro -- check` passed (0 errors/warnings/hints). Both generated pages were checked for absence of newsletter/email forms and retention of support/Discord links. Full browser QA remains pending. User screenshots show successful Cloudflare Pages deployment on 2026-10-04. An independent HTTPS request returned HTTP 200 and the expected OBDM page title. This does not verify audio, visual layout, forms, or all assets.
-- The deployed homepage canonical URL still points to `https://obdmpod.com/`; resolve the primary-domain decision before production cutover.
+- User confirmed `ourbigdumbmouth.com` as the primary domain on 2026-10-04. Canonical and structured-data URLs now derive from that primary domain. Local build and Astro checks passed, and both generated pages have the expected canonical/Open Graph/organization URLs. Production DNS cutover remains pending.
 - Setup screenshots showed Astro preset, `npm run build`, output `dist`, and root `3 - The source/obdm-site`. Cloudflare initially presented Workers setup; Pages was accessed using the bottom “Continue to Pages” link.
 - No DNS changes, custom-domain attachment, or Squarespace cancellation were performed in this chat.
 - The user explicitly authorized pushing to the new repository. `git ls-remote` verified access and returned no refs (empty repository) before import. GitHub visibility and account permissions were not separately queried.
@@ -48,7 +48,7 @@ Workspace: `/Users/maxmini/git/obdm_site_2026` (Mac).
 - `package.json` declares Astro `^7.0.6`, Node `>=22.12.0`, and dev/build/preview scripts. Locked dependencies installed successfully on this Mac during the newsletter-removal change.
 - The handoff says Node 20+, which conflicts with the declared package requirement.
 - `netlify.toml` specifies `npm run build` and output folder `dist`; this configuration does not establish a host or deployment.
-- `astro.config.mjs` and structured data in `src/layouts/Layout.astro` identify `https://obdmpod.com`; the existing public site is `https://ourbigdumbmouth.com/`. Proposed canonical domain is the latter, pending confirmation of the relationship between both domains.
+- Primary domain is confirmed as `https://ourbigdumbmouth.com/`. Configure it in `astro.config.mjs` and derive structured-data site URLs from `Astro.site`. Ownership and desired handling of `obdmpod.com` remain unconfirmed; no redirects for that domain have been configured.
 - The user identified GoDaddy as the domain registrar/provider. The user confirmed access to GoDaddy DNS settings and that they do not use email addresses at `@ourbigdumbmouth.com`. No domain-email migration is needed. Proposed approach: retain registration at GoDaddy while migrating website hosting; if Cloudflare Pages is chosen for the apex, move DNS management separately.
 - Public DNS lookup on this Mac returned `ns03.domaincontrol.com` / `ns04.domaincontrol.com`; `www` CNAME points to `ext-cust.squarespace.com`. No MX answer was returned. These observations do not establish registrar identity, account access, or whether email is used.
 - Public site navigation includes `/about`, `/podcast`, `/join-us`, `/contact`, and `/podcast-segments`. This is a starting URL inventory, not a complete crawl.
@@ -91,3 +91,9 @@ Run source commands from `3 - The source/obdm-site/`.
 
 - Source and generated output validated on 2026-10-04. Commit `21d4248` pushed to `main`; after Cloudflare rebuilt, HTTPS fetches of `/` and `/v2/` confirmed newsletter forms absent and support content retained. Browser visual QA was not performed for this change.
 - Original handoff preview/export folders are historical snapshots and were not regenerated; Cloudflare builds the edited Astro source.
+
+## Domain Connection — 2026-10-04
+
+- Canonical host confirmed by user: `ourbigdumbmouth.com` (without www). Proposed alias: `www.ourbigdumbmouth.com` redirects to the primary, preserving paths and queries; not yet configured.
+- Public DNS still uses `ns03.domaincontrol.com` and `ns04.domaincontrol.com`. Apex A records: `198.49.23.145`, `198.185.159.145`, `198.49.23.144`, `198.185.159.144`. `www` CNAME: `ext-cust.squarespace.com`. DS query returned no answer. This is a partial public snapshot, not a full zone backup or conclusive account-level DNSSEC check.
+- Next external step: Pages project → Custom domains → Set up a domain → `ourbigdumbmouth.com`. Follow Cloudflare onboarding to import/review DNS and obtain the assigned nameservers. Back up GoDaddy DNS and review imported records before switching nameservers. GoDaddy retains registration.

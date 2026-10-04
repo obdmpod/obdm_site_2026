@@ -11,7 +11,7 @@ Source: User request, local source inspection, public OBDM website, public DNS l
 
 - GitHub: `obdmpod/obdm_site_2026`, already pushed and verified.
 - Selected host: Cloudflare Pages. Preview deployed by the user at https://obdm-site-2026.pages.dev/ on 2026-10-04. Independent HTTPS fetch returned HTTP 200 and the expected OBDM title; full functional/visual QA remains pending. The comparison below is retained as planning background.
-- Primary domain recommendation: `https://ourbigdumbmouth.com/`, preserving the established address. Confirm how `obdmpod.com` should relate to it before implementing canonical URLs or redirects.
+- Primary domain confirmed by user on 2026-10-04: `https://ourbigdumbmouth.com/`. Configure the `www` alias to redirect to it, preserving paths and queries. Handling/ownership of `obdmpod.com` remains unconfirmed; do not configure it without clarification.
 - Keep Libsyn audio/RSS, external video services, Patreon, and Fourthwall separate from the website migration.
 - Deploy from the editable source, not the supplied prebuilt export.
 - No server or database is required for the current static implementation. There will be no newsletter, per user decision on 2026-10-04. Verified live status remains a separate integration decision.
@@ -39,7 +39,7 @@ Exit condition: content/URL inventory and DNS backup exist; account dependencies
 
 - Install from the lockfile, validate dependency availability, run Astro checks and the production build. Local install, production build, and Astro checks passed on Mac on 2026-10-04 (Node v25.4.0; 0 diagnostics).
 - Pin a supported Node version satisfying the package's `>=22.12.0` requirement, using the same major version locally and on the host.
-- Confirm design choice and replace canonical/structured-data `obdmpod.com` values if the established domain is retained.
+- Primary domain is confirmed: update canonical and structured-data URLs to `ourbigdumbmouth.com`. Design choice remains open.
 - Confirm hotline and schedule. Current public site uses `614.388.9109`; new source uses `513-461-2175`. The two sites also differ on Saturday showtime.
 - Newsletter signup has been removed from both source designs and validated in generated output. User confirmed no newsletter on 2026-10-04; no provider or subscriber migration is planned.
 - Retain a clearly labeled schedule-based live indicator unless actual stream verification is implemented.
@@ -87,8 +87,8 @@ Exit condition: replacement serves the real domain over HTTPS and functional che
 
 ## Open Decisions
 
-1. Primary domain and handling of `obdmpod.com`.
+1. Any secondary domains, including ownership and handling of `obdmpod.com`. Primary is confirmed as `ourbigdumbmouth.com`.
 2. Design, hotline, show schedule, and retained pages. Newsletter is excluded by user decision.
 3. Episode refresh trigger and cutover date.
 
-Progress as of 2026-10-04: the user completed Cloudflare Pages deployment. No DNS cutover, custom-domain attachment, or Squarespace cancellation was performed in this chat. The preview still uses `https://obdmpod.com/` as its canonical URL. The plan was committed and pushed with newsletter removal (`21d4248`). Both deployed pages were subsequently checked over HTTPS and no longer contain newsletter forms.
+Progress as of 2026-10-04: the user completed Cloudflare Pages deployment. No DNS cutover, custom-domain attachment, or Squarespace cancellation was performed in this chat. Primary-domain metadata now uses `ourbigdumbmouth.com`; local build/check and generated HTML validation passed. Custom-domain activation/DNS remains pending. The plan was committed and pushed with newsletter removal (`21d4248`). Both deployed pages were subsequently checked over HTTPS and no longer contain newsletter forms.
