@@ -89,5 +89,5 @@ Run source commands from `3 - The source/obdm-site/`.
 
 ## Newsletter Removal Delivery
 
-- Source and generated output validated on 2026-10-04. Push/deployed verification pending.
+- Source and generated output validated on 2026-10-04. Commit `21d4248` pushed to `main`; after Cloudflare rebuilt, HTTPS fetches of `/` and `/v2/` confirmed newsletter forms absent and support content retained. Browser visual QA was not performed for this change.
 - Original handoff preview/export folders are historical snapshots and were not regenerated; Cloudflare builds the edited Astro source.

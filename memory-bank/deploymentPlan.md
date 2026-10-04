@@ -91,4 +91,4 @@ Exit condition: replacement serves the real domain over HTTPS and functional che
 2. Design, hotline, show schedule, and retained pages. Newsletter is excluded by user decision.
 3. Episode refresh trigger and cutover date.
 
-Progress as of 2026-10-04: the user completed Cloudflare Pages deployment. No DNS cutover, custom-domain attachment, or Squarespace cancellation was performed in this chat. The preview still uses `https://obdmpod.com/` as its canonical URL. Plan updates remain local and have not been committed or pushed yet.
+Progress as of 2026-10-04: the user completed Cloudflare Pages deployment. No DNS cutover, custom-domain attachment, or Squarespace cancellation was performed in this chat. The preview still uses `https://obdmpod.com/` as its canonical URL. The plan was committed and pushed with newsletter removal (`21d4248`). Both deployed pages were subsequently checked over HTTPS and no longer contain newsletter forms.
