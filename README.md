@@ -6,7 +6,7 @@ Repository: https://github.com/obdmpod/obdm_site_2026
 
 ## Current status
 
-No host or deployment has been established for this project. The original `READ ME FIRST.md` is retained as handoff documentation, but its claims about previous GitHub repositories, collaborator access, and a Netlify preview are unverified. Use this README and `memory-bank/` for the current project state.
+Cloudflare Pages preview: https://obdm-site-2026.pages.dev/. The production-domain migration from Squarespace is still pending. The original `READ ME FIRST.md` is retained as handoff documentation, but its claims about previous GitHub repositories, collaborator access, and a Netlify preview are unverified. Use this README and `memory-bank/` for the current project state.
 
 ## Layout
 
@@ -27,12 +27,12 @@ npm install
 npm run build
 ```
 
-Read the application's `AGENTS.md` before development. Dependencies and builds have not yet been validated in this workspace. A future host must run the build from the application subdirectory and publish its `dist/` output.
+Read the application's `AGENTS.md` before development. The locked dependencies, production build, and Astro checks passed on Mac on 2026-10-04. A future host must run the build from the application subdirectory and publish its `dist/` output.
 
 ## Before launch
 
 - Review both designs and confirm the hotline number.
-- Connect or remove the newsletter signup form.
+- No newsletter is planned; signup UI has been removed from both source designs.
 - Decide how to trigger rebuilds so the latest Libsyn episode stays current.
 - Review the schedule-based live indicator; it does not currently verify the actual stream.
 - Select hosting and validate the production build before deployment or domain changes.

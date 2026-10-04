@@ -189,15 +189,6 @@ const support = [
             ))}
           </div>
         </div>
-        <div class="v2card">
-          <h4>Keep in Touch</h4>
-          <p>Maybe we'll do a newsletter. Or an emergency blast. Probably not. But maybe...</p>
-          <form class="v2field" data-newsletter>
-            <label for="v2-email" class="visually-hidden">Email address</label>
-            <input id="v2-email" type="email" name="email" required placeholder="Enter your email address..." />
-            <button type="submit" class="v2btn v2btn--white">Sign Up</button>
-          </form>
-        </div>
       </div>
     </section>
 
@@ -937,7 +928,7 @@ const support = [
 
   .v2support-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 0;
     border: 3px solid #0a0a0a;
   }
@@ -987,27 +978,6 @@ const support = [
   .v2support-links a:hover {
     background: var(--bone);
     color: #0a0a0a;
-  }
-
-  .v2field {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .v2field input {
-    flex: 1;
-    min-width: 180px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 2px solid var(--bone);
-    color: var(--bone);
-    padding: 12px 14px;
-    font-family: var(--font-mono);
-    font-size: 13.5px;
-  }
-
-  .v2field input::placeholder {
-    color: rgba(236, 231, 216, 0.5);
   }
 
   @media (max-width: 900px) {

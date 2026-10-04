@@ -79,21 +79,6 @@ const support = [
           }
         </div>
       </div>
-      <div class="card card--signal">
-        <h4>Keep in Touch</h4>
-        <p>Maybe we'll do a newsletter. Or an emergency blast. Probably not. But maybe...</p>
-        <form class="field" data-newsletter>
-          <label for="signal-email" class="visually-hidden">Email address</label>
-          <input
-            id="signal-email"
-            type="email"
-            name="email"
-            required
-            placeholder="Enter your email address..."
-          />
-          <button type="submit" class="btn btn--amber-solid">Sign Up</button>
-        </form>
-      </div>
     </div>
   </div>
 </section>
@@ -230,7 +215,7 @@ const support = [
   /* --- secondary support options --- */
   .support-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 22px;
   }
 
@@ -253,38 +238,6 @@ const support = [
     color: var(--dim);
     font-size: 13.5px;
     margin-bottom: 16px;
-  }
-
-  .field {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .field input {
-    flex: 1;
-    min-width: 180px;
-    background: var(--void);
-    border: 1px solid var(--line);
-    color: var(--bone);
-    padding: 12px 14px;
-    border-radius: 3px;
-    font-family: var(--font-mono);
-    font-size: 13.5px;
-  }
-
-  .field input:focus-visible {
-    outline: 2px solid var(--green);
-    outline-offset: 1px;
-    border-color: var(--green);
-  }
-
-  .note {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--green-dim);
-    margin-top: 12px;
-    letter-spacing: 0.03em;
   }
 
   .support-links {
