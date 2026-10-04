@@ -33,36 +33,4 @@ const description =
     <LatestTransmission episode={latest} />
   </main>
   <SiteFooter />
-  <a href="/v2" class="v2-peek">See the bolder concept →</a>
 </Layout>
-
-<style>
-  .v2-peek {
-    position: fixed;
-    bottom: 18px;
-    right: 18px;
-    z-index: 250;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 9px 16px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--dim);
-    box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.7);
-    transition:
-      border-color 0.2s var(--ease-signal),
-      color 0.2s var(--ease-signal);
-  }
-
-  .v2-peek:hover {
-    border-color: var(--green);
-    color: var(--bone);
-  }
-
-  @media (max-width: 600px) {
-    .v2-peek {
-      display: none;
-    }
-  }
-</style>
