@@ -8,14 +8,7 @@ import JoinSignal from "../components/JoinSignal.astro";
 import FeaturedMerch from "../components/FeaturedMerch.astro";
 import LatestTransmission from "../components/LatestTransmission.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import { getLatestEpisode } from "../lib/rss";
-
-let latest = null;
-try {
-  latest = await getLatestEpisode();
-} catch (err) {
-  console.error("[obdm] Failed to fetch RSS feed at build time:", err);
-}
+import latest from "../data/latest-episode.json";
 
 const title = "OBDM — Our Big Dumb Mouth";
 const description =

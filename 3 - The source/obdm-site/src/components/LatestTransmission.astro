@@ -18,7 +18,7 @@ function formatTime(seconds: number): string {
 }
 ---
 
-<section class="sec reveal" id="latest">
+<section class="sec reveal" id="latest" data-episode-date={episode?.pubDate}>
   <div class="wrap">
     <div class="sec__head">
       <h2>Latest Transmission</h2>
@@ -28,10 +28,10 @@ function formatTime(seconds: number): string {
       episode ? (
         <div class="latest">
           <div class="latest__card">
-            <span class="latest__no">
+            <span data-episode-number class="latest__no">
               {episode.episodeNumber ? `▚ EPISODE ${episode.episodeNumber}` : "▚ SPECIAL BROADCAST"}
             </span>
-            <h3 class="latest__title">{episode.cleanTitle}</h3>
+            <h3 data-episode-title class="latest__title">{episode.cleanTitle}</h3>
 
             {episode.audioUrl ? (
               <div class="player" data-player>
@@ -55,33 +55,16 @@ function formatTime(seconds: number): string {
               </a>
             )}
 
-            <a href={episode.link} class="latest__src" target="_blank" rel="noopener">
+            <a href={episode.link} class="latest__src" data-episode-link target="_blank" rel="noopener">
               // full notes: ourbigdumbmouth.libsyn.com
             </a>
           </div>
 
-          {episode.chapters.length > 0 ? (
-            <ol class="chapters" data-chapters>
-              {episode.chapters.map((ch) =>
-                episode.audioUrl ? (
-                  <li>
-                    <button type="button" class="chapter-row" data-seconds={ch.seconds}>
-                      <span class="t">{formatTime(ch.seconds)}</span>
-                      <span class="d">{ch.label}</span>
-                      <Icon name="play" size={11} class="chapter-row__ico" />
-                    </button>
-                  </li>
-                ) : (
-                  <li class="chapter-row chapter-row--static">
-                    <span class="t">{formatTime(ch.seconds)}</span>
-                    <span class="d">{ch.label}</span>
-                  </li>
-                ),
-              )}
-            </ol>
-          ) : (
-            <p class="latest__fallback">{episode.summary}</p>
-          )}
+          <ol class="chapters" data-chapters hidden={!episode.chapters.length}>
+            {episode.chapters.map((ch) => <li><button type="button" class="chapter-row" data-seconds={ch.seconds}><span class="t">{formatTime(ch.seconds)}</span><span class="d">{ch.label}</span><Icon name="play" size={11} class="chapter-row__ico" /></button></li>)}
+          </ol>
+          <template data-chapter-template><li><button type="button" class="chapter-row" data-seconds="0"><span class="t"></span><span class="d"></span><Icon name="play" size={11} class="chapter-row__ico" /></button></li></template>
+          <p class="latest__fallback" data-episode-summary hidden={!!episode.chapters.length}>{episode.summary}</p>
         </div>
       ) : (
         <p class="latest__fallback">Feed's down for a second — check back shortly, or hit the RSS feed directly.</p>
@@ -338,77 +321,5 @@ function formatTime(seconds: number): string {
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>("[data-player]").forEach((root) => {
-    const audio = root.querySelector<HTMLAudioElement>("[data-audio]");
-    const playBtn = root.querySelector<HTMLButtonElement>("[data-play]");
-    const seek = root.querySelector<HTMLInputElement>("[data-seek]");
-    const currentEl = root.querySelector<HTMLElement>("[data-current]");
-    const durationEl = root.querySelector<HTMLElement>("[data-duration]");
-    if (!audio || !playBtn || !seek) return;
-
-    function formatTime(seconds: number): string {
-      if (!isFinite(seconds) || seconds < 0) return "0:00";
-      const h = Math.floor(seconds / 3600);
-      const m = Math.floor((seconds % 3600) / 60);
-      const s = Math.floor(seconds % 60);
-      const mm = h > 0 ? String(m).padStart(2, "0") : String(m);
-      const ss = String(s).padStart(2, "0");
-      return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
-    }
-
-    let dragging = false;
-
-    playBtn.addEventListener("click", () => {
-      if (audio.paused) audio.play();
-      else audio.pause();
-    });
-
-    audio.addEventListener("play", () => {
-      playBtn.classList.add("is-playing");
-      playBtn.setAttribute("aria-label", "Pause");
-    });
-
-    audio.addEventListener("pause", () => {
-      playBtn.classList.remove("is-playing");
-      playBtn.setAttribute("aria-label", "Play latest episode");
-    });
-
-    audio.addEventListener("loadedmetadata", () => {
-      seek.max = String(Math.floor(audio.duration));
-      if (durationEl) durationEl.textContent = formatTime(audio.duration);
-    });
-
-    audio.addEventListener("timeupdate", () => {
-      if (!dragging) seek.value = String(Math.floor(audio.currentTime));
-      if (currentEl) currentEl.textContent = formatTime(audio.currentTime);
-      updateActiveChapter();
-    });
-
-    seek.addEventListener("pointerdown", () => (dragging = true));
-    seek.addEventListener("pointerup", () => (dragging = false));
-    seek.addEventListener("input", () => {
-      audio.currentTime = Number(seek.value);
-      if (currentEl) currentEl.textContent = formatTime(audio.currentTime);
-    });
-
-    const chapterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-chapters] button.chapter-row"));
-
-    function updateActiveChapter() {
-      if (!audio) return;
-      let active: HTMLButtonElement | null = null;
-      for (const btn of chapterButtons) {
-        const secs = Number(btn.getAttribute("data-seconds"));
-        if (audio.currentTime >= secs) active = btn;
-      }
-      chapterButtons.forEach((b) => b.classList.toggle("is-active", b === active));
-    }
-
-    chapterButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const secs = Number(btn.getAttribute("data-seconds"));
-        audio.currentTime = secs;
-        audio.play();
-      });
-    });
-  });
+  import "../lib/latest-player";
 </script>

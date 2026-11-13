@@ -15,7 +15,7 @@ The handoff README claims older GitHub repositories, collaborator permissions, a
 
 ## Status
 
-Current state: preview deployed; nameservers switched and Cloudflare zone activation confirmed by user screenshot. Last verified production website targets remain Squarespace. Pages custom-domain cutover remains pending. See `deploymentPlan.md`.
+Current state: the production apex serves the Astro site on Cloudflare Pages. See `deploymentPlan.md`.
 
 - Read the handoff README, nested source README and AGENTS.md, package/configuration files, and selected source components.
 - Project memory initialization was explicitly approved by the user.
@@ -55,7 +55,7 @@ Workspace: `/Users/maxmini/git/obdm_site_2026` (Mac).
 - Current public contact page lists `ourbigdumbmouth@gmail.com`, `614.388.9109`, and a newsletter signup form; signup backend and subscriber list have not been inspected.
 - The archived nested Git metadata retains the old `obdmsite2026` remotes for provenance. Active root Git uses the new `obdm_site_2026` repository.
 - Initial source Git diff showed executable-bit changes across most files and `CLAUDE.md` changed from a symlink to an empty regular file. Preserve supplied file contents; use ordinary file modes in the root index except shell scripts and the `.command` launcher.
-- Episode data is fetched from Libsyn RSS at build time in `src/lib/rss.ts`; published static episode content needs a rebuild to refresh.
+- See the 2026-11-13 Latest Transmission entry below for the daily runtime refresh and bundled fallback.
 - Live status currently follows the Eastern Time show schedule. A Twitch helper exists, but the inspected implementation has no wired verification endpoint.
 - User decision (2026-10-04): no newsletter. Remove signup UI from both designs; do not add a provider or subscriber migration requirement.
 - Source displays hotline `513-461-2175`. The handoff reports a conflicting `614-388-9109` in episode descriptions; that external feed claim has not been independently verified and the correct number remains a user decision.
@@ -77,7 +77,7 @@ Proposed follow-up work, not yet performed:
 1. User selected v1; complete its browser review.
 2. Correct handoff documentation to reflect the actual project baseline.
 3. Local build and Astro checks passed; complete visual/functional review of the deployed site.
-4. Resolve hotline and decide how episode content should refresh. Newsletter has been removed from scope per user.
+4. Resolve hotline. Newsletter has been removed from scope per user.
 5. Review the Cloudflare preview, correct launch blockers, and prepare the DNS backup and route migration. GoDaddy DNS access and absence of domain email are confirmed.
 6. Validate a preview deployment before DNS cutover; retain Squarespace during verification and rollback window.
 
@@ -156,3 +156,11 @@ Source: User's GoDaddy custom-nameserver screenshot and live DNS/HTTPS queries f
 - User approved aligning social previews with v1. Homepage metadata title is now `OBDM — Our Big Dumb Mouth`; description matches the visible introduction and schedule, including Cretched and "most Wednesdays". Shared layout generates its 1200×630 preview from `hero-broadcast-still.webp` (wizard/T-Rex), replacing the older Bigfoot poster.
 - Mac M4 / macOS / Codex desktop validation: network-enabled build passed; generated description, Open Graph and Twitter fields verified, and generated JPEG visually inspected. Source: local source/build and user request; writer: Codex.
 - Live apex HTTPS fetch during diagnosis returned the new Astro site with the older metadata, confirming production serves the replacement site. `www` redirect and full functional QA remain unverified.
+- Delivery: commit `0d38efb` pushed to `main`; live apex HTTPS metadata verified with the new title, description and wizard/T-Rex image after Cloudflare deployment. Discord's existing message card itself was not refreshed or independently verified.
+
+
+## Latest Transmission — 2026-11-13
+
+- Production previously displayed 1428 while the first item in Libsyn RSS was 1439. User requested morning data refresh without routine site deployments.
+- A Pages Function at `/api/latest-episode` reads only the newest Libsyn item, using per-location daily caching after 12:00 UTC. A read-only GitHub Actions timer calls that endpoint at 12:17 UTC; it never pushes code or invokes a deployment. The player reads the endpoint on page load, retaining a playable bundled fallback, and never interrupts playback for a delayed refresh.
+- Mac M4 / macOS / Codex desktop: tested the actual RSS, repeated requests, next-day rollover, and upstream failure. Production build and Astro checks passed. Source: user request, live RSS and local validation; writer: Codex.

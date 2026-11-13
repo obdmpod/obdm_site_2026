@@ -1,7 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
 
-const FEED_URL = "https://ourbigdumbmouth.libsyn.com/rss";
-
 export interface Chapter {
   time: string;
   seconds: number;
@@ -122,34 +120,20 @@ function normalize(raw: RawItem): Episode {
   };
 }
 
-let cache: Episode[] | null = null;
-
-/**
- * Fetches and parses the OBDM Libsyn RSS feed at build time (server-side —
- * Libsyn does not send CORS headers, so this cannot run in the browser).
- * Shared by the homepage's "Latest Transmission" section and the future
- * /episodes archive.
- */
-export async function getEpisodes(): Promise<Episode[]> {
-  if (cache) return cache;
-
-  const res = await fetch(FEED_URL, {
-    headers: { "User-Agent": "obdm-site-build/1.0" },
+/** Extract the newest item from Libsyn's newest-first feed. */
+export function parseLatestEpisode(xml: string): Episode {
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: "@_",
+    parseTagValue: false,
+    isArray: (_name, path) => path === "rss.channel.item",
   });
-  if (!res.ok) {
-    throw new Error(`OBDM RSS fetch failed: ${res.status} ${res.statusText}`);
+  const first = parser.parse(xml)?.rss?.channel?.item?.[0];
+  if (!first) throw new Error("Libsyn RSS contains no episodes");
+  const episode = normalize(first);
+  if (!episode.title || !episode.guid || !Number.isFinite(Date.parse(episode.pubDate)) ||
+      !/^https?:\/\//i.test(episode.link) || !/^https?:\/\//i.test(episode.audioUrl ?? "")) {
+    throw new Error("Incomplete latest episode; keeping the previous snapshot");
   }
-
-  const xml = await res.text();
-  const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
-  const doc = parser.parse(xml);
-  const items: RawItem[] = doc?.rss?.channel?.item ?? [];
-
-  cache = items.map(normalize);
-  return cache;
-}
-
-export async function getLatestEpisode(): Promise<Episode | null> {
-  const episodes = await getEpisodes();
-  return episodes[0] ?? null;
+  return episode;
 }

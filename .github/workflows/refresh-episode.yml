@@ -1,0 +1,17 @@
+name: Check latest transmission each morning
+on:
+  schedule:
+    - cron: '17 12 * * *'
+  workflow_dispatch:
+
+permissions: {}
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Wake the site's daily Libsyn refresh
+        run: |
+          curl --fail --silent --show-error --retry 3 --max-time 25 \
+            https://ourbigdumbmouth.com/api/latest-episode -o episode.json
+          jq -e '.guid and .audioUrl and .cleanTitle' episode.json
